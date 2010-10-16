@@ -148,7 +148,7 @@ static const TypeMapping types[] =
    {"xbmc.gui.skin",                     ADDON_SKIN,                  166 },
    {"xbmc.gui.webinterface",             ADDON_WEB_INTERFACE,         199 },
    {"xbmc.addon.repository",             ADDON_REPOSITORY,          24011 },
-   {"pvrclient",                         ADDON_PVRDLL,                  0 },
+   {"xbmc.pvrclient",                    ADDON_PVRDLL,              24018 },
    {"xbmc.addon.video",                  ADDON_VIDEO,                1037 },
    {"xbmc.addon.audio",                  ADDON_AUDIO,                1038 },
    {"xbmc.addon.image",                  ADDON_IMAGE,                1039 },
@@ -347,6 +347,9 @@ void CAddon::BuildLibName(const cp_extension_t *extension)
     case ADDON_VIZ:
       ext = ADDON_VIS_EXT;
       break;
+    case ADDON_PVRDLL:
+      ext = ADDON_PVRDLL_EXT;
+      break;
     case ADDON_SCRIPT:
     case ADDON_SCRIPT_LIBRARY:
     case ADDON_SCRIPT_LYRICS:
@@ -381,6 +384,7 @@ void CAddon::BuildLibName(const cp_extension_t *extension)
       case ADDON_SCRAPER_MUSICVIDEOS:
       case ADDON_SCRAPER_TVSHOWS:
       case ADDON_SCRAPER_LIBRARY:
+      case ADDON_PVRDLL:
       case ADDON_PLUGIN:
         {
           CStdString temp = CAddonMgr::Get().GetExtValue(extension->configuration, "@library");
