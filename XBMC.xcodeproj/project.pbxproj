@@ -1924,11 +1924,8 @@
 		183FDF8811AF0B0500B81E9C /* PluginSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PluginSource.cpp; path = addons/PluginSource.cpp; sourceTree = "<group>"; };
 		183FDF8911AF0B0500B81E9C /* PluginSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PluginSource.h; path = addons/PluginSource.h; sourceTree = "<group>"; };
 		18B49FF11152BFA5001AF8A6 /* Addon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Addon.cpp; path = addons/Addon.cpp; sourceTree = "<group>"; };
-		18B49FF21152BFA5001AF8A6 /* Addon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Addon.h; path = addons/Addon.h; sourceTree = "<group>"; };
-		18B49FF31152BFA5001AF8A6 /* AddonDll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddonDll.h; path = addons/AddonDll.h; sourceTree = "<group>"; };
 		18B49FF41152BFA5001AF8A6 /* AddonManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AddonManager.cpp; path = addons/AddonManager.cpp; sourceTree = "<group>"; };
 		18B49FF51152BFA5001AF8A6 /* AddonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddonManager.h; path = addons/AddonManager.h; sourceTree = "<group>"; };
-		18B49FF61152BFA5001AF8A6 /* DllAddon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DllAddon.h; path = addons/DllAddon.h; sourceTree = "<group>"; };
 		18B49FF71152BFA5001AF8A6 /* DllScreenSaver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DllScreenSaver.h; path = addons/DllScreenSaver.h; sourceTree = "<group>"; };
 		18B49FF81152BFA5001AF8A6 /* DllVisualisation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DllVisualisation.h; path = addons/DllVisualisation.h; sourceTree = "<group>"; };
 		18B49FF91152BFA5001AF8A6 /* fft.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fft.cpp; path = addons/fft.cpp; sourceTree = "<group>"; };
@@ -4133,13 +4130,20 @@
 				183FDF8811AF0B0500B81E9C /* PluginSource.cpp */,
 				183FDF8911AF0B0500B81E9C /* PluginSource.h */,
 				18B49FF11152BFA5001AF8A6 /* Addon.cpp */,
-				18B49FF21152BFA5001AF8A6 /* Addon.h */,
-				18B49FF31152BFA5001AF8A6 /* AddonDll.h */,
 				18B49FF41152BFA5001AF8A6 /* AddonManager.cpp */,
 				18B49FF51152BFA5001AF8A6 /* AddonManager.h */,
+				832F2C76120D8C0300026B38 /* AddonHelpers_Addon.cpp */,
+				832F2C77120D8C0300026B38 /* AddonHelpers_Addon.h */,
+				832F2C78120D8C0300026B38 /* AddonHelpers_GUI.cpp */,
+				832F2C82120D8C0F00026B38 /* PVRClient.cpp */,
+				832F2C83120D8C1000026B38 /* PVRClient.h */,
+				832F2C79120D8C0300026B38 /* AddonHelpers_GUI.h */,
+				832F2C7A120D8C0300026B38 /* AddonHelpers_local.cpp */,
+				832F2C7B120D8C0300026B38 /* AddonHelpers_local.h */,
+				832F2C7C120D8C0300026B38 /* AddonHelpers_PVR.cpp */,
+				832F2C7D120D8C0300026B38 /* AddonHelpers_PVR.h */,
 				F52BFFDA115D5574004B1D66 /* AddonStatusHandler.cpp */,
 				F52BFFD9115D5574004B1D66 /* AddonStatusHandler.h */,
-				18B49FF61152BFA5001AF8A6 /* DllAddon.h */,
 				18B49FF71152BFA5001AF8A6 /* DllScreenSaver.h */,
 				18B49FF81152BFA5001AF8A6 /* DllVisualisation.h */,
 				18B49FF91152BFA5001AF8A6 /* fft.cpp */,
@@ -8259,6 +8263,36 @@
 				F5BDB80C120202F400F0B710 /* DVDSubtitleTagSami.cpp in Sources */,
 				F5BDB81A1202032400F0B710 /* DVDSubtitleTagMicroDVD.cpp in Sources */,
 				F5BDB820120203C200F0B710 /* AutoPtrHandle.cpp in Sources */,
+				832F2C46120D8B5E00026B38 /* PVRManager.cpp in Sources */,
+				832F2C4F120D8B7F00026B38 /* PVRChannels.cpp in Sources */,
+				832F2C50120D8B7F00026B38 /* PVREpg.cpp in Sources */,
+				832F2C51120D8B7F00026B38 /* PVRRecordings.cpp in Sources */,
+				832F2C52120D8B7F00026B38 /* PVRTimers.cpp in Sources */,
+				832F2C69120D8BA900026B38 /* GUIDialogPVRChannelManager.cpp in Sources */,
+				832F2C6A120D8BA900026B38 /* GUIDialogPVRChannelsOSD.cpp in Sources */,
+				832F2C6B120D8BA900026B38 /* GUIDialogPVRCutterOSD.cpp in Sources */,
+				832F2C6C120D8BA900026B38 /* GUIDialogPVRDirectorOSD.cpp in Sources */,
+				832F2C6D120D8BA900026B38 /* GUIDialogPVRGroupManager.cpp in Sources */,
+				832F2C6E120D8BA900026B38 /* GUIDialogPVRGuideInfo.cpp in Sources */,
+				832F2C6F120D8BA900026B38 /* GUIDialogPVRGuideOSD.cpp in Sources */,
+				832F2C70120D8BA900026B38 /* GUIDialogPVRGuideSearch.cpp in Sources */,
+				832F2C71120D8BA900026B38 /* GUIDialogPVRRecordingInfo.cpp in Sources */,
+				832F2C72120D8BA900026B38 /* GUIDialogPVRTimerSettings.cpp in Sources */,
+				832F2C73120D8BA900026B38 /* GUIDialogPVRUpdateProgressBar.cpp in Sources */,
+				832F2C7E120D8C0300026B38 /* AddonHelpers_Addon.cpp in Sources */,
+				832F2C7F120D8C0300026B38 /* AddonHelpers_GUI.cpp in Sources */,
+				832F2C80120D8C0300026B38 /* AddonHelpers_local.cpp in Sources */,
+				832F2C81120D8C0300026B38 /* AddonHelpers_PVR.cpp in Sources */,
+				832F2C84120D8C1000026B38 /* PVRClient.cpp in Sources */,
+				832F2C87120D8C5300026B38 /* TVDatabase.cpp in Sources */,
+				832F2C8A120D8C9300026B38 /* GUIEPGGridContainer.cpp in Sources */,
+				832F2C8F120D8CB500026B38 /* PVRDirectory.cpp in Sources */,
+				832F2C90120D8CB500026B38 /* PVRFile.cpp in Sources */,
+				832F2C95120D8CF600026B38 /* TextSearch.cpp in Sources */,
+				832F2C98120D8D0B00026B38 /* DVDDemuxPVRClient.cpp in Sources */,
+				832F2C9B120D8D3000026B38 /* GUIWindowTV.cpp in Sources */,
+				832F2CA0120D8D5C00026B38 /* DVDInputStreamPVRManager.cpp in Sources */,
+				832F2CA3120D8D7600026B38 /* GUIViewStateTV.cpp in Sources */,
 				F5E728A51227112500B152C1 /* URIUtils.cpp in Sources */,
 				7CF1FB0C123B1AF000B2CBCB /* Variant.cpp in Sources */,
 				832F2C46120D8B5E00026B38 /* PVRManager.cpp in Sources */,
@@ -9182,7 +9216,7 @@
 		1DEB924808733DCA0010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_AUTO_VECTORIZATION = YES;
@@ -9257,7 +9291,7 @@
 		1DEB924908733DCA0010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
