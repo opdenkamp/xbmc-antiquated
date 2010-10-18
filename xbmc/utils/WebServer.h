@@ -47,7 +47,7 @@ class CWebServer : public JSONRPC::ITransportLayer
 public:
   CWebServer();
 
-  bool Start(const char *ip, int port);
+  bool Start(int port, const CStdString &username, const CStdString &password);
   bool Stop();
   bool IsStarted();
   void SetCredentials(const CStdString &username, const CStdString &password);
@@ -61,7 +61,7 @@ private:
     GET,
     HEAD
   };
-
+  struct MHD_Daemon* StartMHD(unsigned int flags, int port);
   static int AskForAuthentication (struct MHD_Connection *connection);
   static bool IsAuthenticated (CWebServer *server, struct MHD_Connection *connection);
 

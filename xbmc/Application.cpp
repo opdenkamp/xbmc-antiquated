@@ -1203,13 +1203,9 @@ void CApplication::StartWebServer()
         return;
     }
 #endif
-    if (m_network.GetFirstConnectedInterface())
-      m_WebServer.Start(m_network.GetFirstConnectedInterface()->GetCurrentIPAddress().c_str(), webPort/*, "special://xbmc/web", false*/);
 
-    if (m_WebServer.IsStarted())
+    if (m_WebServer.Start(webPort, g_guiSettings.GetString("services.webserverusername"), g_guiSettings.GetString("services.webserverpassword")))
     {
-      m_WebServer.SetCredentials(g_guiSettings.GetString("services.webserverusername"), g_guiSettings.GetString("services.webserverpassword"));
-
       // publish web frontend and API services
 #ifdef HAS_WEB_INTERFACE
       CZeroconf::GetInstance()->PublishService("servers.webserver", "_http._tcp", "XBMC Web Server", webPort);
@@ -1222,7 +1218,7 @@ void CApplication::StartWebServer()
 #endif
     }
 #ifdef HAS_HTTPAPI
-    if (g_settings.m_HttpApiBroadcastLevel>=1)
+    if (g_settings.m_HttpApiBroadcastLevel >= 1)
       getApplicationMessenger().HttpApi("broadcastlevel; StartUp;1");
 #endif
   }
