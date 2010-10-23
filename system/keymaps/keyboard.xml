@@ -602,4 +602,9 @@
       <backspace>PreviousMenu</backspace>
     </keyboard>
   </MyTVSettings>
+  <NumericInput>
+    <keyboard>
+      <backspace>Close</backspace>
+    </keyboard>
+  </NumericInput>
 </keymap>
