@@ -59,7 +59,7 @@ private:
   CButtonTranslator(const CButtonTranslator&);
   CButtonTranslator const& operator=(CButtonTranslator const&);
   virtual ~CButtonTranslator();
-
+  bool HasDeviceType(TiXmlNode *pWindow, CStdString type);
 public:
   ///access to singleton
   static CButtonTranslator& GetInstance();
@@ -101,8 +101,6 @@ private:
 
   static uint32_t TranslateGamepadString(const char *szButton);
   static uint32_t TranslateRemoteString(const char *szButton);
-  static uint32_t TranslateUniversalRemoteString(const char *szButton);
-
   static uint32_t TranslateKeyboardString(const char *szButton);
   static uint32_t TranslateKeyboardButton(TiXmlElement *pButton);
 
