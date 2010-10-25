@@ -91,13 +91,13 @@ bool CEdl::ReadEditDecisionLists(const CStdString& strMovie, const float fFrameR
     CLog::Log(LOGDEBUG, "%s - Assuming 24p -> NTSC conversion interlaced content. Adjusted frames per second from %.3f (~47.952 fps) to %.3f",
               __FUNCTION__, fFrameRate, fFramesPerSecond);
   }
-  else if (iHeight == 576) // PAL. Can't used fps check of 50.0 as this is valid for 720p
+  else if (iHeight == 576 && fFrameRate > 30.0) // PAL @ 50.0fps rather than PAL @ 25.0 fps. Can't use direct fps check of 50.0 as this is valid for 720p
   {
     fFramesPerSecond = fFrameRate / 2; // ~25.0f - division used to retain accuracy of original.
     CLog::Log(LOGDEBUG, "%s - Assuming PAL interlaced content. Adjusted frames per second from %.3f (~50.00 fps) to %.3f",
               __FUNCTION__, fFrameRate, fFramesPerSecond);
   }
-  else if (iHeight == 1080) // Don't know of any 1080p content being broadcast so assume 1080i
+  else if (iHeight == 1080 && fFrameRate > 30.0) // Don't know of any 1080p content being broadcast at higher than 30.0 fps so assume 1080i
   {
     fFramesPerSecond = fFrameRate / 2;
     CLog::Log(LOGDEBUG, "%s - Assuming 1080i interlaced content. Adjusted frames per second from %.3f to %.3f",
