@@ -18,12 +18,9 @@
 #  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 
-PULSE=$(which pulseaudio)
-if [ ! -z "$PULSE" ]; then
-  $PULSE --start
-fi
-
 XBMC="xbmc --standalone \"$@\""
+
+@XBMC_STANDALONE_SH_PULSE@
 
 LOOP=1
 CRASHCOUNT=0
