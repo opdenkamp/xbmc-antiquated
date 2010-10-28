@@ -85,7 +85,6 @@
   </global>
   <Home>
     <remote>
-      <menu>XBMC.Skin.ToggleSetting(HomeViewToggle)</menu>
       <info>XBMC.ActivateWindow(SystemInfo)</info>
       <clear>XBMC.ActivateWindow(Weather)</clear>
       <hash>XBMC.ActivateWindow(Settings)</hash>
@@ -204,11 +203,13 @@
   <VisualisationSettings>
     <remote>
       <menu>Close</menu>
+      <back>Close</back>
     </remote>
   </VisualisationSettings>
   <VisualisationPresetList>
     <remote>
       <menu>Close</menu>
+      <back>Close</back>
     </remote>
   </VisualisationPresetList>
   <SlideShow>
