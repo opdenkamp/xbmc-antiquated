@@ -19,6 +19,7 @@
  *
  */
 
+#include "Application.h"
 #include "GUIDialogBoxBase.h"
 #include "GUIWindowManager.h"
 
@@ -60,7 +61,7 @@ void CGUIDialogBoxBase::SetHeading(const string& strLine)
   CGUIMessage msg(GUI_MSG_LABEL_SET, GetID(), 1);
   msg.SetLabel(strLine);
 
-  if(OwningCriticalSection(g_graphicsContext))
+  if(g_application.IsCurrentThread())
     OnMessage(msg);
   else
     g_windowManager.SendThreadMessage(msg, GetID());
@@ -75,7 +76,7 @@ void CGUIDialogBoxBase::SetHeading(int iString)
   else
     msg.SetLabel("");
 
-  if(OwningCriticalSection(g_graphicsContext))
+  if(g_application.IsCurrentThread())
     OnMessage(msg);
   else
     g_windowManager.SendThreadMessage(msg, GetID());
@@ -87,7 +88,7 @@ void CGUIDialogBoxBase::SetLine(int iLine, const string& strLine)
   CGUIMessage msg(GUI_MSG_LABEL_SET, GetID(), iLine + 2);
   msg.SetLabel(strLine);
 
-  if(OwningCriticalSection(g_graphicsContext))
+  if(g_application.IsCurrentThread())
     OnMessage(msg);
   else
     g_windowManager.SendThreadMessage(msg, GetID());
@@ -103,7 +104,7 @@ void CGUIDialogBoxBase::SetLine(int iLine, int iString)
   else
     msg.SetLabel("");
 
-  if(OwningCriticalSection(g_graphicsContext))
+  if(g_application.IsCurrentThread())
     OnMessage(msg);
   else
     g_windowManager.SendThreadMessage(msg, GetID());
@@ -118,7 +119,7 @@ void CGUIDialogBoxBase::SetChoice(int iButton, int iString) // iButton == 0 for 
   else
     msg.SetLabel("");
 
-  if(OwningCriticalSection(g_graphicsContext))
+  if(g_application.IsCurrentThread())
     OnMessage(msg);
   else
     g_windowManager.SendThreadMessage(msg, GetID());
@@ -130,7 +131,7 @@ void CGUIDialogBoxBase::SetChoice(int iButton, const string& strString) // iButt
   CGUIMessage msg(GUI_MSG_LABEL_SET, GetID(), 10+iButton);
   msg.SetLabel(strString);
 
-  if(OwningCriticalSection(g_graphicsContext))
+  if(g_application.IsCurrentThread())
     OnMessage(msg);
   else
     g_windowManager.SendThreadMessage(msg, GetID());
