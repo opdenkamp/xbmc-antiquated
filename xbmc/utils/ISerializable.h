@@ -1,6 +1,6 @@
 #pragma once
 /*
- *      Copyright (C) 2005-2008 Team XBMC
+ *      Copyright (C) 2005-2010 Team XBMC
  *      http://www.xbmc.org
  *
  *  This Program is free software; you can redistribute it and/or modify
@@ -20,18 +20,11 @@
  *
  */
 
-#include "IDirectory.h"
+class CVariant;
 
-namespace XFILE
+class ISerializable
 {
-  class CFTPDirectory : public IDirectory
-  {
-    public:
-      CFTPDirectory(void);
-      virtual ~CFTPDirectory(void);
-      virtual bool GetDirectory(const CStdString& strPath, CFileItemList &items);
-      virtual bool Exists(const char* strPath);
-    private:
-  };
-}
-
+public:
+  virtual void Serialize(CVariant& value) = 0;
+  virtual ~ISerializable() {}
+};

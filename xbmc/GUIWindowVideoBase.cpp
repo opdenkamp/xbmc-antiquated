@@ -25,6 +25,7 @@
 #include "utils/IMDB.h"
 #include "utils/RegExp.h"
 #include "utils/GUIInfoManager.h"
+#include "utils/Variant.h"
 #include "addons/AddonManager.h"
 #include "addons/IAddon.h"
 #include "GUIWindowVideoInfo.h"
@@ -62,6 +63,7 @@
 #include "utils/log.h"
 #include "utils/FileUtils.h"
 #include "utils/PVRRecordings.h"
+#include "utils/AnnouncementManager.h"
 
 #include "addons/Skin.h"
 #include "MediaManager.h"
@@ -1555,6 +1557,10 @@ void CGUIWindowVideoBase::MarkWatched(const CFileItemPtr &item, bool bMark)
         database.ClearBookMarksOfFile(pItem->m_strPath, CBookmark::RESUME);
 
       database.SetPlayCount(*pItem, bMark ? 1 : 0);
+
+      CVariant value;
+      value["markwatched"] = bMark;
+      ANNOUNCEMENT::CAnnouncementManager::Announce(ANNOUNCEMENT::Other, "xbmc", "MarkedWatched", &value);
     }
     
     database.Close(); 
@@ -1856,6 +1862,9 @@ void CGUIWindowVideoBase::OnSearch()
   CFileItemList items;
   DoSearch(strSearch, items);
 
+  if (m_dlgProgress)
+    m_dlgProgress->Close();
+
   if (items.Size())
   {
     CGUIDialogSelect* pDlgSelect = (CGUIDialogSelect*)g_windowManager.GetWindow(WINDOW_DIALOG_SELECT);
@@ -1872,25 +1881,14 @@ void CGUIWindowVideoBase::OnSearch()
 
     int iItem = pDlgSelect->GetSelectedLabel();
     if (iItem < 0)
-    {
-      if (m_dlgProgress)
-        m_dlgProgress->Close();
-
-      return ;
-    }
+      return;
 
     CFileItemPtr pSelItem = items[iItem];
 
     OnSearchItemFound(pSelItem.get());
-
-    if (m_dlgProgress)
-      m_dlgProgress->Close();
   }
   else
   {
-    if (m_dlgProgress)
-      m_dlgProgress->Close();
-
     CGUIDialogOK::ShowAndGetInput(194, 284, 0, 0);
   }
 }

@@ -27,6 +27,7 @@
 
 #include "GUIListItem.h"
 #include "utils/Archive.h"
+#include "utils/ISerializable.h"
 #include "DateTime.h"
 #include "SortFileItem.h"
 #include "utils/LabelFormatter.h"
@@ -64,7 +65,7 @@ class CMediaSource;
   \sa CFileItemList
   */
 class CFileItem :
-      public CGUIListItem, public ISerializable
+  public CGUIListItem, public IArchivable, public ISerializable
 {
 public:
   CFileItem(void);
@@ -87,7 +88,8 @@ public:
 
   void Reset();
   const CFileItem& operator=(const CFileItem& item);
-  virtual void Serialize(CArchive& ar);
+  virtual void Archive(CArchive& ar);
+  virtual void Serialize(CVariant& value);
   virtual bool IsFileItem() const { return true; };
 
   bool Exists(bool bUseCache = true) const;
@@ -405,7 +407,7 @@ public:
   CFileItemList();
   CFileItemList(const CStdString& strPath);
   virtual ~CFileItemList();
-  virtual void Serialize(CArchive& ar);
+  virtual void Archive(CArchive& ar);
   CFileItemPtr operator[] (int iItem);
   const CFileItemPtr operator[] (int iItem) const;
   CFileItemPtr operator[] (const CStdString& strPath);
