@@ -1758,7 +1758,7 @@
   <string id="19180">TV</string>
   <string id="19181">Menu/OSD</string>
   <string id="19182">Weergegeven dagen in de TV gids</string>
-  <string id="19183">TV gids wachttijd/string>
+  <string id="19183">TV gids wachttijd</string>
   <string id="19184">Kanaal info tijd</string>
   <string id="19185">Wis TV database</string>
   <string id="19186">Alle gegevens in de TV database worden gewist</string>
@@ -1827,7 +1827,7 @@
   <string id="19531"></string>
   <string id="19532">Show/Spel Show</string>
   <string id="19533">Spel Show/Quiz/Wedstrijd</string>
-  <string id="19534">Variété/string>
+  <string id="19534">Variété</string>
   <string id="19535">Talk Show</string>
   <string id="19536"></string>
   <string id="19537"></string>
@@ -1923,7 +1923,7 @@
   <string id="19627"></string>
   <string id="19628">Educatie/Wetenschap/Feiten</string>
   <string id="19629">Natuur/Dieren/Milieu</string>
-  <string id="19630">Technologie/Natuur Wetenschappen</string>
+  <string id="19630">Technologie/Natuurwetenschappen</string>
   <string id="19631">Geneeskunde/Physiologie/Psychologie</string>
   <string id="19632">Buitenland/Expedities</string>
   <string id="19633">Sociale/Spirituele Wetenschap</string>
@@ -1941,11 +1941,10 @@
   <string id="19645">Tourisme/Reizen</string>
   <string id="19646">Handwerk</string>
   <string id="19647">Autorijden</string>
-  <string id="19648">Fitness & Gezondheid</string>
+  <string id="19648">Fitness &amp; Gezondheid</string>
   <string id="19649">Koken</string>
   <string id="19650">Reclame/Winkelen</string>
   <string id="19651">Tuinieren</string>
-  <string id="19652"></string>
   <string id="19652"></string>
   <string id="19653"></string>
   <string id="19654"></string>
