@@ -58,6 +58,9 @@ CGUIViewState* CGUIViewState::GetViewState(int windowId, const CFileItemList& it
 
   const CURL url=items.GetAsUrl();
 
+  if (items.IsAddonsPath())
+    return new CGUIViewStateAddonBrowser(items);
+
   if (items.HasSortDetails())
     return new CGUIViewStateFromItems(items);
 
