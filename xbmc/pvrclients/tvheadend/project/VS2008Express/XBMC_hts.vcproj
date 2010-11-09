@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\..\cores\dvdplayer\Codecs\ffmpeg;..\..\;..\..\libhts\win32\include;..\..\pthread_win32;..\..\windows;..\..\..\..\addons\include;..\..\..\..\cores\dvdplayer\DVDDemuxers"
+				AdditionalIncludeDirectories="..\..\..\..\cores\dvdplayer\Codecs\ffmpeg;..\..\..\..\cores\dvdplayer\Codecs\ffmpeg\include;..\..\;..\..\libhts\win32\include;..\..\pthread_win32;..\..\windows;..\..\..\..\addons\include;..\..\..\..\cores\dvdplayer\DVDDemuxers"
 				PreprocessorDefinitions="_WIN32;WIN32;_WINDOWS;_WIN32PC;_USE_32BIT_TIME_T;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_WINSOCKAPI_;USE_DEMUX"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -113,7 +113,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\..\..\cores\dvdplayer\Codecs\ffmpeg;..\..\;..\..\libhts\win32\include;..\..\pthread_win32;..\..\windows;..\..\..\..\addons\include;..\..\..\..\cores\dvdplayer\DVDDemuxers"
+				AdditionalIncludeDirectories="..\..\..\..\cores\dvdplayer\Codecs\ffmpeg;..\..\..\..\cores\dvdplayer\Codecs\ffmpeg\include;..\..\;..\..\libhts\win32\include;..\..\pthread_win32;..\..\windows;..\..\..\..\addons\include;..\..\..\..\cores\dvdplayer\DVDDemuxers"
 				PreprocessorDefinitions="_WIN32;WIN32;_WINDOWS;_WIN32PC;_USE_32BIT_TIME_T;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_WINSOCKAPI_;USE_DEMUX"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -178,7 +178,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\addons\org.xbmc.addon.library\dlfcn-win32.cpp"
+				RelativePath="..\..\..\..\..\addons\library.xbmc.addon\dlfcn-win32.cpp"
 				>
 			</File>
 			<File
