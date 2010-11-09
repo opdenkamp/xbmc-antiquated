@@ -29,6 +29,7 @@
 #include "addons/Repository.h"
 #include "addons/PluginSource.h"
 #include "StringUtils.h"
+#include "TextureManager.h"
 #include "File.h"
 #include "SpecialProtocol.h"
 
@@ -117,6 +118,9 @@ bool CAddonsDirectory::GetDirectory(const CStdString& strPath, CFileItemList &it
             CFileItemPtr item(new CFileItem(TranslateType((TYPE)i,true)));
             item->m_strPath = CUtil::AddFileToFolder(strPath,TranslateType((TYPE)i,false));
             item->m_bIsFolder = true;
+            CStdString thumb = GetIcon((TYPE)i);
+            if (!thumb.IsEmpty() && g_TextureManager.HasTexture(thumb))
+              item->SetThumbnailImage(thumb);
             items.Add(item);
             break;
           }
