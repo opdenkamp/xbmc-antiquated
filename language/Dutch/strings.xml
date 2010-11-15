@@ -2,7 +2,7 @@
 <!--Language file translated with Team XBMC Translator-->
 <!--Translator: Lars Op den Kamp-->
 <!--Email: lars@opdenkamp.eu-->
-<!--Date of translation: 11/07/2010-->
+<!--Date of translation: 11/15/2010-->
 <!--$Revision$-->
 <!--Based on english strings version 32586-->
 <strings>
@@ -1521,6 +1521,7 @@
   <string id="16317">Temporal (Half)</string>
   <string id="16318">Temporal/Spatial (Half)</string>
   <string id="16319">DXVA</string>
+  <string id="16320">Auto - ION geoptimaliseerd</string>
   <string id="16400">Video post-processing</string>
   <string id="16401">Uitgeschakeld</string>
   <string id="16402">Ingeschakeld voor SD content</string>
