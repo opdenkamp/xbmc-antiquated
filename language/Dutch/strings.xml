@@ -2,7 +2,7 @@
 <!--Language file translated with Team XBMC Translator-->
 <!--Translator: Lars Op den Kamp-->
 <!--Email: lars@opdenkamp.eu-->
-<!--Date of translation: 11/07/2010-->
+<!--Date of translation: 11/15/2010-->
 <!--$Revision$-->
 <!--Based on english strings version 32586-->
 <strings>
@@ -998,6 +998,7 @@
   <string id="13013">Opnieuw opstarten</string>
   <string id="13014">Minimaliseren</string>
   <string id="13015">Actie voor aan/uitknop</string>
+  <string id="13016">Uitschakelen</string>
   <string id="13020">Er is een andere sessie actief, wellicht SSH?</string>
   <string id="13021">Verwisselbare harde schijf aankoppelen?</string>
   <string id="13022">Apparaat onveilig verwijderd</string>
@@ -1257,6 +1258,10 @@
   <string id="13508">Hoog</string>
   <string id="13509">Echt hoog</string>
   <string id="13510">Afspelen video naar beeldscherm synchroniseren</string>
+  <string id="13550">Pauzeer tijdens aanpassen verversingssnelheid</string>
+  <string id="13551">Uit</string>
+  <string id="13552">%.1f Seconde</string>
+  <string id="13553">%.1f Seconden</string>
   <string id="13600">Apple afstandsbediening</string>
   <string id="13602">Altijd actief</string>
   <string id="13603">Ondertitel eerder/later starten</string>
@@ -1521,6 +1526,7 @@
   <string id="16317">Temporal (Half)</string>
   <string id="16318">Temporal/Spatial (Half)</string>
   <string id="16319">DXVA</string>
+  <string id="16320">Auto - ION geoptimaliseerd</string>
   <string id="16400">Video post-processing</string>
   <string id="16401">Uitgeschakeld</string>
   <string id="16402">Ingeschakeld voor SD content</string>
@@ -2237,6 +2243,7 @@
   <string id="20255">Eerste login, profiel bijwerken</string>
   <string id="20256">HTS tvheadend client</string>
   <string id="20257">VDR streamdev client</string>
+  <string id="20258">MythTV client</string>
   <string id="20300">Webservermap (HTTP)</string>
   <string id="20301">Webservermap (HTTPS)</string>
   <string id="20302">Kan niet schrijven naar map:</string>
@@ -2397,6 +2404,8 @@
   <string id="20451">Landen</string>
   <string id="20452">Aflevering</string>
   <string id="20453">Afleveringen</string>
+  <string id="20454">Listener</string>
+  <string id="20455">Listeners</string>
   <string id="21330">Verborgen bestanden en mappen weergeven</string>
   <string id="21331">TuxBox-client</string>
   <string id="21332">WAARSCHUWING: TuxBox is aan het opnemen.</string>
