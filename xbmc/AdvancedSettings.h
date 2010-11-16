@@ -272,6 +272,7 @@ class CAdvancedSettings
 
     DatabaseSettings m_databaseMusic; // advanced music database setup
     DatabaseSettings m_databaseVideo; // advanced video database setup
+    DatabaseSettings m_databaseTV; // advanced tv database setup
 };
 
 extern CAdvancedSettings g_advancedSettings;
