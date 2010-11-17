@@ -245,7 +245,7 @@
 				<onclick>XBMC.PlayerControl(Rewind)</onclick>
 				<visible>VideoPlayer.Content(LiveTV)</visible>
 				<enable>false</enable>
-				<animation effect="fade" start="100" end="50" time="100" condition="true">Conditional</animation>
+				<animation effect="fade" start="100" end="50" time="100" condition="!system.getbool(pvrplayback.timeshift)">Conditional</animation>
 			</control>
 			<control type="button" id="702">
 				<posx>40</posx>
@@ -281,7 +281,7 @@
 				<onclick>XBMC.PlayerControl(Play)</onclick>
 				<visible>VideoPlayer.Content(LiveTV)</visible>
 				<enable>false</enable>
-				<animation effect="fade" start="100" end="50" time="100" condition="true">Conditional</animation>
+				<animation effect="fade" start="100" end="50" time="100" condition="!system.getbool(pvrplayback.timeshift)">Conditional</animation>
 			</control>
 			<control type="button" id="704">
 				<posx>120</posx>

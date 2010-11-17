@@ -1020,7 +1020,7 @@ void CGUIWindowFullScreen::SeekToTimeCodeStamp(SEEK_TYPE type, SEEK_DIRECTION di
 
 void CGUIWindowFullScreen::SeekTV(bool bPlus, bool bLargeStep)
 {
-  if (bLargeStep)
+  if (bLargeStep && !g_guiSettings.GetBool("pvrplayback.timeshift"))
   {
     if (bPlus)
       OnAction(CAction(ACTION_NEXT_ITEM));

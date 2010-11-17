@@ -377,8 +377,8 @@
 					<onup>700</onup>
 					<ondown>700</ondown>
 					<onclick>PlayerControl(Rewind)</onclick>
-					<enable>false</enable>
-					<animation effect="fade" start="100" end="50" time="100" condition="true">Conditional</animation>
+					<enable>system.getbool(pvrplayback.timeshift)</enable>
+					<animation effect="fade" start="100" end="50" time="100" condition="!system.getbool(pvrplayback.timeshift)">Conditional</animation>
 					<visible>VideoPlayer.Content(LiveTV)</visible>
 				</control>
 				<control type="togglebutton" id="601">
@@ -399,8 +399,8 @@
 					<onup>700</onup>
 					<ondown>700</ondown>
 					<onclick>PlayerControl(Play)</onclick>
-					<enable>false</enable>
-					<animation effect="fade" start="100" end="50" time="100" condition="true">Conditional</animation>
+					<enable>system.getbool(pvrplayback.timeshift)</enable>
+					<animation effect="fade" start="100" end="50" time="100" condition="!system.getbool(pvrplayback.timeshift)">Conditional</animation>
 					<visible>VideoPlayer.Content(LiveTV)</visible>
 				</control>
 				<control type="button" id="603">
@@ -433,8 +433,8 @@
 					<onup>70</onup>
 					<ondown>700</ondown>
 					<onclick>PlayerControl(Forward)</onclick>
-					<enable>false</enable>
-					<animation effect="fade" start="100" end="50" time="100" condition="true">Conditional</animation>
+					<enable>system.getbool(pvrplayback.timeshift)</enable>
+					<animation effect="fade" start="100" end="50" time="100" condition="!system.getbool(pvrplayback.timeshift)">Conditional</animation>
 					<visible>VideoPlayer.Content(LiveTV)</visible>
 				</control>
 				<control type="button" id="602">
