@@ -323,6 +323,10 @@ public:
    */
   int64_t SeekStream(int64_t iFilePosition, int iWhence = SEEK_SET);
 
+  bool SeekTimeRequired();
+  int SeekTimeStep(bool bPlus, bool bLargeStep, __int64 curTime);
+  bool SeekTime(int iTimeInMsec, int *iRetTimeInMsec);
+
   /*! \brief Get the current playing position in stream
    \return the current position inside stream
    */

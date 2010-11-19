@@ -204,7 +204,7 @@ DWORD CPVRTimeshiftRcvr::GetDuration()
  ********************************************************************/
 const char* CPVRTimeshiftRcvr::GetDurationString()
 {
-  StringUtils::SecondsToTimeString(GetDuration()/1000, m_DurationStr, TIME_FORMAT_GUESS);
+  m_DurationStr = StringUtils::SecondsToTimeString(GetDuration()/1000, TIME_FORMAT_GUESS);
   return m_DurationStr.c_str();
 }
 
@@ -825,9 +825,7 @@ void CPVRManager::Process()
       if (time < 10000)
       {
         CLog::Log(LOGINFO,"PVR: Playback is resumed after reaching end of timeshift buffer");
-        CAction action;
-        action.id = ACTION_PAUSE;
-        g_application.OnAction(action);
+        g_application.OnAction(CAction(ACTION_PAUSE));
       }
     }
 
@@ -1108,7 +1106,7 @@ const char* CPVRManager::TranslateCharInfo(DWORD dwInfo)
                  m_TimeshiftReceiver->GetTimeTotal() +
                  m_TimeshiftReceiver->GetDuration();
 
-      StringUtils::SecondsToTimeString(time/1000, m_timeshiftTime, TIME_FORMAT_GUESS);
+      m_timeshiftTime = StringUtils::SecondsToTimeString(time/1000, TIME_FORMAT_GUESS);
       return m_timeshiftTime.c_str();
     }
   }
@@ -2313,7 +2311,7 @@ int64_t CPVRManager::SeekStream(int64_t iFilePosition, int iWhence/* = SEEK_SET*
     else if (m_timeshiftExt)
     {
       // TODO: check with external timeshift
-      streamNewPos = m_clients[m_currentPlayingChannel->GetPVRChannelInfoTag()->ClientID()]->SeekLiveStream(pos, whence);
+      streamNewPos = m_clients[m_currentPlayingChannel->GetPVRChannelInfoTag()->ClientID()]->SeekLiveStream(iFilePosition, iWhence);
     }
   }
   else if (m_currentPlayingRecording)
