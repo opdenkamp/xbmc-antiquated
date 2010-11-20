@@ -1184,6 +1184,8 @@ bool CApplication::Initialize()
   CCrystalHD::GetInstance();
 #endif
 
+  CAddonMgr::Get().StartServices();
+
   CLog::Log(LOGNOTICE, "initialize done");
 
   m_bInitializing = false;
@@ -3379,6 +3381,9 @@ void CApplication::Stop()
 
   g_mediaManager.Stop();
 
+  // Stop services before unloading Python
+  CAddonMgr::Get().StopServices();
+
 /* Python resource freeing must be done after skin has been unloaded, not before
    some windows still need it when deinitializing during skin unloading. */
 #ifdef HAS_PYTHON
@@ -4923,12 +4928,15 @@ void CApplication::Mute(void)
   { // muted - unmute.
     // In case our premutevolume is 0, return to 100% volume
     if( g_settings.m_iPreMuteVolumeLevel == 0 )
+    {
       SetVolume(100);
+    }
     else
     {
       SetVolume(g_settings.m_iPreMuteVolumeLevel);
       g_settings.m_iPreMuteVolumeLevel = 0;
     }
+    m_guiDialogVolumeBar.Show();
   }
   else
   { // mute

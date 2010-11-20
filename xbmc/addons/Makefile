@@ -6,6 +6,8 @@ SRCS=Addon.cpp \
 		 PluginSource.cpp \
 		 ScreenSaver.cpp \
 		 Scraper.cpp \
+		 Service.cpp \
+		 Skin.cpp \
 		 Visualisation.cpp \
 		 PVRClient.cpp \
 		 fft.cpp \
