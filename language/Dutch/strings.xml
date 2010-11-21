@@ -1595,8 +1595,8 @@
   <string id="19057">Pas geplande opname aan</string>
   <string id="19058">Geplande opname aan/uit</string>
   <string id="19059">Stop opname</string>
-  <string id="19060">Verwijder geplande opname</string>
-  <string id="19061">Voeg geplande opname toe</string>
+  <string id="19060">Annuleer opname</string>
+  <string id="19061">Opnemen</string>
   <string id="19062">Sorteer op: Kanaal</string>
   <string id="19063">Ga naar begin</string>
   <string id="19064">Ga naar einde</string>
@@ -1693,7 +1693,7 @@
   <string id="19155">Zo</string>
   <string id="19156">van</string>
   <string id="19157">Volgende opname</string>
-  <string id="19158">Wordt nu opgenoemen</string>
+  <string id="19158">Wordt nu opgenomen</string>
   <string id="19159">van</string>
   <string id="19160">tot</string>
   <string id="19161">op</string>
