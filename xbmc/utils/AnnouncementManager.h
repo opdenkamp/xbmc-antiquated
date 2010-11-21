@@ -22,7 +22,11 @@
 
 #include "IAnnouncer.h"
 #include "CriticalSection.h"
+#include "boost/shared_ptr.hpp"
 #include <vector>
+
+class CFileItem;
+typedef boost::shared_ptr<CFileItem> CFileItemPtr;
 
 namespace ANNOUNCEMENT
 {
@@ -32,6 +36,7 @@ namespace ANNOUNCEMENT
     static void AddAnnouncer(IAnnouncer *listener);
     static void RemoveAnnouncer(IAnnouncer *listener);
     static void Announce(EAnnouncementFlag flag, const char *sender, const char *message, CVariant *data = NULL);
+    static void Announce(EAnnouncementFlag flag, const char *sender, const char *message, CFileItemPtr item, CVariant *data = NULL);
   private:
     static std::vector<IAnnouncer *> m_announcers;
     static CCriticalSection m_critSection;

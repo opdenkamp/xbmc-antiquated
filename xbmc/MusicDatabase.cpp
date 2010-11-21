@@ -58,6 +58,7 @@
 #include "utils/TimeUtils.h"
 #include "TextureCache.h"
 #include "GUIWindowAddonBrowser.h"
+#include "AutoPtrHandle.h"
 
 using namespace std;
 using namespace AUTOPTR;
@@ -199,7 +200,7 @@ bool CMusicDatabase::CreateTables()
   return true;
 }
 
-void CMusicDatabase::AddSong(const CSong& song, bool bCheck)
+void CMusicDatabase::AddSong(CSong& song, bool bCheck)
 {
   CStdString strSQL;
   try
@@ -307,14 +308,11 @@ void CMusicDatabase::AddSong(const CSong& song, bool bCheck)
       AddExtraAlbumArtists(vecArtists, idAlbum);
     AddExtraGenres(vecGenres, idSong, idAlbum, bCheck);
 
+    song.idSong = idSong;
+
     // Add karaoke information (if any)
     if ( bHasKaraoke )
-    {
-      // song argument is const :(
-      CSong mysong = song;
-      mysong.idSong = idSong;
-      AddKaraokeData( mysong );
-    }
+      AddKaraokeData( song );
   }
   catch (...)
   {

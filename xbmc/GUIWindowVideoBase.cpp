@@ -1560,7 +1560,7 @@ void CGUIWindowVideoBase::MarkWatched(const CFileItemPtr &item, bool bMark)
 
       CVariant value;
       value["markwatched"] = bMark;
-      ANNOUNCEMENT::CAnnouncementManager::Announce(ANNOUNCEMENT::Other, "xbmc", "MarkedWatched", &value);
+      ANNOUNCEMENT::CAnnouncementManager::Announce(ANNOUNCEMENT::Other, "xbmc", "OnMarkedWatched", item, &value);
     }
     
     database.Close(); 
