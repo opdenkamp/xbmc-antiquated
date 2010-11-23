@@ -147,6 +147,12 @@ void CTCPServer::Announce(EAnnouncementFlag flag, const char *sender, const char
 
   for (unsigned int i = 0; i < m_connections.size(); i++)
   {
+    {
+      CSingleLock lock (m_connections[i].m_critSection);
+      if ((m_connections[i].GetAnnouncementFlags() & flag) == 0)
+        continue;
+    }
+
     unsigned int sent = 0;
     do
     {
@@ -229,7 +235,7 @@ void CTCPServer::Deinitialize()
 
 CTCPServer::CTCPClient::CTCPClient()
 {
-  m_announcementflags = 0;
+  m_announcementflags = ANNOUNCE_ALL;
   m_socket = -1;
   m_beginBrackets = 0;
   m_endBrackets = 0;

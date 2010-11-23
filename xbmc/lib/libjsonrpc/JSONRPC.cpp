@@ -241,10 +241,7 @@ JSON_STATUS CJSONRPC::Permission(const CStdString &method, ITransportLayer *tran
   int flags = client->GetPermissionFlags();
   
   for (int i = 1; i <= OPERATION_PERMISSION_ALL; i *= 2)
-  {
-    if (flags & i)
-      result["permission"].append(PermissionToString((OperationPermission)(flags & i)));
-  }
+    result[PermissionToString((OperationPermission)i)] = (flags & i) > 0;
 
   return OK;
 }
@@ -261,10 +258,7 @@ JSON_STATUS CJSONRPC::GetAnnouncementFlags(const CStdString &method, ITransportL
   int flags = client->GetAnnouncementFlags();
   
   for (int i = 1; i <= ANNOUNCE_ALL; i *= 2)
-  {
-    if (flags & i)
-      result["permission"].append(AnnouncementFlagToString((EAnnouncementFlag)(flags & i)));
-  }
+    result[AnnouncementFlagToString((EAnnouncementFlag)i)] = (flags & i) > 0;
 
   return OK;
 }
@@ -276,13 +270,13 @@ JSON_STATUS CJSONRPC::SetAnnouncementFlags(const CStdString &method, ITransportL
 
   int flags = 0;
 
-  if (parameterObject.get("playback", false).asBool())
+  if (parameterObject.get("Playback", false).asBool())
     flags |= Playback;
-  else if (parameterObject.get("gui", false).asBool())
+  if (parameterObject.get("GUI", false).asBool())
     flags |= GUI;
-  else if (parameterObject.get("system", false).asBool())
+  if (parameterObject.get("System", false).asBool())
     flags |= System;
-  else if (parameterObject.get("other", false).asBool())
+  if (parameterObject.get("Other", false).asBool())
     flags |= Other;
 
   if (client->SetAnnouncementFlags(flags))
@@ -398,7 +392,7 @@ inline const char *CJSONRPC::PermissionToString(const OperationPermission &permi
   case ScanLibrary:
     return "ScanLibrary";
   default:
-    return "Unkown";
+    return "Unknown";
   }
 }
 
@@ -415,7 +409,7 @@ inline const char *CJSONRPC::AnnouncementFlagToString(const EAnnouncementFlag &a
   case Other:
     return "Other";
   default:
-    return "Unkown";
+    return "Unknown";
   }
 }
 
