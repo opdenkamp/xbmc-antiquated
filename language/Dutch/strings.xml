@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <!--Language file translated with Team XBMC Translator-->
 <!--Translator: Lars Op den Kamp-->
 <!--Email: lars@opdenkamp.eu-->
@@ -2404,8 +2404,8 @@
   <string id="20451">Landen</string>
   <string id="20452">Aflevering</string>
   <string id="20453">Afleveringen</string>
-  <string id="20454">Listener</string>
-  <string id="20455">Listeners</string>
+  <string id="20454">Luisteraar</string> 
+  <string id="20455">Luisteraars</string>
   <string id="21330">Verborgen bestanden en mappen weergeven</string>
   <string id="21331">TuxBox-client</string>
   <string id="21332">WAARSCHUWING: TuxBox is aan het opnemen.</string>

@@ -159,7 +159,9 @@ Command CJSONRPC::m_commands[] = {
 // Music library
   { "AudioLibrary.GetArtists",                      CAudioLibrary::GetArtists,                           Response,     ReadData,        "Retrieve all artists" },
   { "AudioLibrary.GetAlbums",                       CAudioLibrary::GetAlbums,                            Response,     ReadData,        "Retrieve all albums from specified artist or genre, Fields: album_description, album_theme, album_mood, album_style, album_type, album_label, album_artist, album_genre, album_rating, album_title" },
+  { "AudioLibrary.GetAlbumDetails",                 CAudioLibrary::GetAlbumDetails,                      Response,     ReadData,        "Retrieve details about a specific album. Parameter example { \"fields\": [\"review\"], \"albumid\": 12}. fields is optional"},
   { "AudioLibrary.GetSongs",                        CAudioLibrary::GetSongs,                             Response,     ReadData,        "Retrieve all songs from specified album, artist or genre" },
+  { "AudioLibrary.GetSongDetails",                  CAudioLibrary::GetSongDetails,                       Response,     ReadData,        "Retrieve details about a specific song. Parameter example { \"fields\": [\"title\"], \"songid\": 12}. fields is optional"},
   { "AudioLibrary.GetGenres",                       CAudioLibrary::GetGenres,                            Response,     ReadData,        "Retrieve all genres" },
   { "AudioLibrary.ScanForContent",                  CAudioLibrary::ScanForContent,                       Response,     ScanLibrary,     "" },
 
@@ -240,7 +242,7 @@ JSON_STATUS CJSONRPC::Introspect(const CStdString &method, ITransportLayer *tran
 
 JSON_STATUS CJSONRPC::Version(const CStdString &method, ITransportLayer *transport, IClient *client, const Json::Value& parameterObject, Json::Value &result)
 {
-  result["version"] = 1;
+  result["version"] = 3;
 
   return OK;
 }
@@ -250,10 +252,7 @@ JSON_STATUS CJSONRPC::Permission(const CStdString &method, ITransportLayer *tran
   int flags = client->GetPermissionFlags();
   
   for (int i = 1; i <= OPERATION_PERMISSION_ALL; i *= 2)
-  {
-    if (flags & i)
-      result["permission"].append(PermissionToString((OperationPermission)(flags & i)));
-  }
+    result[PermissionToString((OperationPermission)i)] = (flags & i) > 0;
 
   return OK;
 }
@@ -270,10 +269,7 @@ JSON_STATUS CJSONRPC::GetAnnouncementFlags(const CStdString &method, ITransportL
   int flags = client->GetAnnouncementFlags();
   
   for (int i = 1; i <= ANNOUNCE_ALL; i *= 2)
-  {
-    if (flags & i)
-      result["permission"].append(AnnouncementFlagToString((EAnnouncementFlag)(flags & i)));
-  }
+    result[AnnouncementFlagToString((EAnnouncementFlag)i)] = (flags & i) > 0;
 
   return OK;
 }
@@ -285,13 +281,15 @@ JSON_STATUS CJSONRPC::SetAnnouncementFlags(const CStdString &method, ITransportL
 
   int flags = 0;
 
-  if (parameterObject.get("playback", false).asBool())
+  if (parameterObject.get("Playback", false).asBool())
     flags |= Playback;
-  else if (parameterObject.get("gui", false).asBool())
+  if (parameterObject.get("GUI", false).asBool())
     flags |= GUI;
-  else if (parameterObject.get("system", false).asBool())
+  if (parameterObject.get("System", false).asBool())
     flags |= System;
-  else if (parameterObject.get("other", false).asBool())
+  if (parameterObject.get("Library", false).asBool())
+    flags |= Library;
+  if (parameterObject.get("Other", false).asBool())
     flags |= Other;
 
   if (client->SetAnnouncementFlags(flags))
@@ -309,8 +307,8 @@ JSON_STATUS CJSONRPC::Announce(const CStdString &method, ITransportLayer *transp
     CAnnouncementManager::Announce(Other, parameterObject["sender"].asString().c_str(), parameterObject["message"].asString().c_str());
   else
   {
-    CAnnouncementManager::Announce(Other, parameterObject["sender"].asString().c_str(), parameterObject["message"].asString().c_str(),
-      &CVariant(parameterObject["data"].asString()));
+    CVariant data(parameterObject["data"].asString());
+    CAnnouncementManager::Announce(Other, parameterObject["sender"].asString().c_str(), parameterObject["message"].asString().c_str(), data);
   }
 
   return ACK;
@@ -413,7 +411,7 @@ inline const char *CJSONRPC::PermissionToString(const OperationPermission &permi
   case ScanLibrary:
     return "ScanLibrary";
   default:
-    return "Unkown";
+    return "Unknown";
   }
 }
 
@@ -427,10 +425,12 @@ inline const char *CJSONRPC::AnnouncementFlagToString(const EAnnouncementFlag &a
     return "GUI";
   case System:
     return "System";
+  case Library:
+    return "Library";
   case Other:
     return "Other";
   default:
-    return "Unkown";
+    return "Unknown";
   }
 }
 
