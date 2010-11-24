@@ -2762,6 +2762,8 @@ void CApplication::FrameMove()
 bool CApplication::ProcessGamepad(float frameTime)
 {
 #ifdef HAS_SDL_JOYSTICK
+  if (!m_AppFocused)
+    return false;
   int iWin = g_windowManager.GetActiveWindow() & WINDOW_ID_MASK;
   if (g_windowManager.HasModalDialog())
   {
@@ -3281,6 +3283,8 @@ void CApplication::Stop()
 {
   try
   {
+    CAnnouncementManager::Announce(System, "xbmc", "ApplicationStop");
+
     // cancel any jobs from the jobmanager
     CJobManager::GetInstance().CancelJobs();
 
@@ -3295,7 +3299,6 @@ void CApplication::Stop()
       m_pXbmcHttp->shuttingDown = true;
     }
 #endif
-    CAnnouncementManager::Announce(System, "xbmc", "ApplicationStop");
 
     if( m_bSystemScreenSaverEnable )
       g_Windowing.EnableSystemScreenSaver(true);
