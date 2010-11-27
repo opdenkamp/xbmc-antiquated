@@ -5689,11 +5689,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\xbmc\utils\PVREpg.cpp"
+					RelativePath="..\..\xbmc\utils\PVREpgs.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\xbmc\utils\PVREpg.h"
+					RelativePath="..\..\xbmc\utils\PVREpgs.h"
 					>
 				</File>
 				<File
