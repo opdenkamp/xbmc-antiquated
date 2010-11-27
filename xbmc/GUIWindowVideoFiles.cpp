@@ -320,11 +320,11 @@ void CGUIWindowVideoFiles::OnAssignContent(const CStdString &path, int iFound, A
 
   if (CGUIDialogContentSettings::Show(info, settings, bScan))
   {
-    if(settings.exclude || !info)
+    if(settings.exclude || (!info && info2))
     {
       OnUnAssignContent(path,20375,20340,20341);
     }
-    else if (info2)
+    else if (info != info2)
     {
       if (OnUnAssignContent(path,20442,20443,20444))
         bScan = true;
@@ -526,7 +526,8 @@ bool CGUIWindowVideoFiles::OnContextButton(int itemNumber, CONTEXT_BUTTON button
     if (CGUIDialogContextMenu::OnContextButton("video", item, button))
     {
       //TODO should we search DB for entries from plugins?
-      if (button == CONTEXT_BUTTON_REMOVE_SOURCE && !item->IsPlugin())
+      if (button == CONTEXT_BUTTON_REMOVE_SOURCE && !item->IsPlugin()
+          && !item->IsLiveTV() &&!item->IsRSS())
       {
         OnUnAssignContent(item->m_strPath,20375,20340,20341);
       }

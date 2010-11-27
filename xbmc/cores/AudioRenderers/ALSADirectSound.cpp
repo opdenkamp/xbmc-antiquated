@@ -271,11 +271,11 @@ bool CALSADirectSound::Initialize(IAudioCallback* pCallback, const CStdString& d
   nErr = snd_pcm_sw_params(m_pPlayHandle, sw_params);
   CHECK_ALSA_RETURN(LOGERROR,"snd_pcm_sw_params",nErr);
 
+  m_bCanPause    = !!snd_pcm_hw_params_can_pause(hw_params);
+
   snd_pcm_hw_params_free (hw_params);
   snd_pcm_sw_params_free (sw_params);
 
-
-  m_bCanPause    = !!snd_pcm_hw_params_can_pause(hw_params);
 
   CLog::Log(LOGDEBUG, "CALSADirectSound::Initialize - frame count:%u, packet count:%u, buffer size:%u"
                     , (unsigned int)m_dwFrameCount
@@ -451,7 +451,7 @@ unsigned int CALSADirectSound::GetSpaceFrames()
   if (nSpace == 0)
   {
     snd_pcm_state_t state = snd_pcm_state(m_pPlayHandle);
-    if(state != SND_PCM_STATE_RUNNING && !m_bPause)
+    if(state != SND_PCM_STATE_RUNNING && state != SND_PCM_STATE_PREPARED && !m_bPause)
     {
       CLog::Log(LOGWARNING,"CALSADirectSound::GetSpace - buffer underun (%d)", state);
       Flush();
