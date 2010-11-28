@@ -62,6 +62,7 @@
 #include "LocalizeStrings.h"
 #include "CPUInfo.h"
 #include "StringUtils.h"
+#include "MathUtils.h"
 
 // stuff for current song
 #include "MusicInfoTagLoaderFactory.h"
@@ -3107,7 +3108,7 @@ CStdString CGUIInfoManager::GetMusicLabel(int item)
       }
       CStdString strBitrate = "";
       if (m_MusicBitrate > 0)
-        strBitrate.Format("%i", m_MusicBitrate);
+        strBitrate.Format("%i", MathUtils::round_int((double)m_MusicBitrate / 1000.0));
       return strBitrate;
     }
     break;
