@@ -47,8 +47,6 @@
 #define TIME_TO_CACHE_NEXT_FILE 5000L         // 5 seconds
 #define TIME_TO_CROSS_FADE      10000L        // 10 seconds
 
-extern XFILE::CFileShoutcast* m_pShoutCastRipper;
-
 // PAP: Psycho-acoustic Audio Player
 // Supporting all open  audio codec standards.
 // First one being nullsoft's nsv audio decoder format
@@ -120,7 +118,7 @@ bool PAPlayer::OpenFile(const CFileItem& file, const CPlayerOptions &options)
 
   m_crossFading = g_guiSettings.GetInt("musicplayer.crossfade");
   //WASAPI doesn't support multiple streams, no crossfading for cdda, cd-reading goes mad and no crossfading for last.fm doesn't like two connections
-  if (file.IsCDDA() || file.IsLastFM() || file.IsShoutCast() || g_guiSettings.GetString("audiooutput.audiodevice").find("wasapi:") != CStdString::npos) m_crossFading = 0;
+  if (file.IsCDDA() || file.IsLastFM() || g_guiSettings.GetString("audiooutput.audiodevice").find("wasapi:") != CStdString::npos) m_crossFading = 0;
   if (m_crossFading && IsPlaying())
   {
     //do a short crossfade on trackskip
@@ -1087,30 +1085,6 @@ bool PAPlayer::SkipNext()
     return true;
   }
   return false;
-}
-
-bool PAPlayer::CanRecord()
-{
-  if (!m_pShoutCastRipper) return false;
-  return m_pShoutCastRipper->CanRecord();
-}
-
-bool PAPlayer::IsRecording()
-{
-  if (!m_pShoutCastRipper) return false;
-  return m_pShoutCastRipper->IsRecording();
-}
-
-bool PAPlayer::Record(bool bOnOff)
-{
-  if (!m_pShoutCastRipper) return false;
-  if (bOnOff && IsRecording()) return true;
-  if (bOnOff == false && IsRecording() == false) return true;
-  if (bOnOff)
-    return m_pShoutCastRipper->Record();
-
-  m_pShoutCastRipper->StopRecording();
-  return true;
 }
 
 void PAPlayer::WaitForStream()

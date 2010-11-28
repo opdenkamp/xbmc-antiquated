@@ -700,7 +700,6 @@ bool CFileItem::IsAudio() const
   if (HasVideoInfoTag()) return false;
   if (HasPictureInfoTag()) return false;
   if (IsCDDA()) return true;
-  if (!m_bIsFolder && IsShoutCast()) return true;
   if (!m_bIsFolder && IsLastFM()) return true;
 
   CStdString extension;
@@ -748,7 +747,7 @@ bool CFileItem::IsPVRTimer() const
 
 bool CFileItem::IsKaraoke() const
 {
-  if ( !IsAudio() || IsLastFM() || IsShoutCast())
+  if ( !IsAudio() || IsLastFM())
     return false;
 
   return CKaraokeLyricsFactory::HasLyrics( m_strPath );
@@ -776,11 +775,6 @@ bool CFileItem::IsCUESheet() const
   return CUtil::GetExtension(m_strPath).Equals(".cue", false);
 }
 
-bool CFileItem::IsShoutCast() const
-{
-  return CUtil::IsShoutCast(m_strPath);
-}
-
 bool CFileItem::IsLastFM() const
 {
   return CUtil::IsLastFM(m_strPath);
@@ -805,8 +799,7 @@ bool CFileItem::IsFileFolder() const
     IsType(".ogg") ||
     IsType(".nsf") ||
     IsType(".sid") ||
-    IsType(".sap") ||
-    IsShoutCast()
+    IsType(".sap")
     );
 }
 
