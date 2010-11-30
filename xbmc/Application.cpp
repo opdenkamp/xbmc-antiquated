@@ -2206,6 +2206,8 @@ void CApplication::RenderMemoryStatus()
 
 bool CApplication::OnKey(const CKey& key)
 {
+  CStdString keyname;
+
   // Turn the mouse off, as we've just got a keypress from controller or remote
   g_Mouse.SetActive(false);
 
@@ -2226,7 +2228,7 @@ bool CApplication::OnKey(const CKey& key)
   // allow some keys to be processed while the screensaver is active
   if (WakeUpScreenSaverAndDPMS() && !processKey)
   {
-    CLog::Log(LOGDEBUG, "%s: %i pressed, screen saver/dpms woken up", __FUNCTION__, (int) key.GetButtonCode());
+    CLog::Log(LOGDEBUG, "%s: %s pressed, screen saver/dpms woken up", __FUNCTION__, g_Keyboard.GetKeyName((int) key.GetButtonCode(), keyname));
     return true;
   }
 
@@ -2240,7 +2242,7 @@ bool CApplication::OnKey(const CKey& key)
     action = CButtonTranslator::GetInstance().GetAction(iWin, key);
 
     if (!key.IsAnalogButton())
-      CLog::Log(LOGDEBUG, "%s: %i pressed, trying fullscreen info action %s", __FUNCTION__, (int) key.GetButtonCode(), action.GetName().c_str());
+      CLog::Log(LOGDEBUG, "%s: %s pressed, trying fullscreen info action %s", __FUNCTION__, g_Keyboard.GetKeyName((int) key.GetButtonCode(), keyname), action.GetName().c_str());
 
     if (OnAction(action))
       return true;
@@ -2323,7 +2325,7 @@ bool CApplication::OnKey(const CKey& key)
         }
       }
 
-      CLog::Log(LOGDEBUG, "%s: %i pressed, trying keyboard action %i", __FUNCTION__, (int) key.GetButtonCode(), action.GetID());
+      CLog::Log(LOGDEBUG, "%s: %s pressed, trying keyboard action %i", __FUNCTION__, g_Keyboard.GetKeyName((int) key.GetButtonCode(), keyname), action.GetID());
 
       if (OnAction(action))
         return true;
@@ -2338,7 +2340,7 @@ bool CApplication::OnKey(const CKey& key)
       action = CButtonTranslator::GetInstance().GetAction(iWin, key);
   }
   if (!key.IsAnalogButton())
-    CLog::Log(LOGDEBUG, "%s: %i pressed, action is %s", __FUNCTION__, (int) key.GetButtonCode(), action.GetName().c_str());
+    CLog::Log(LOGDEBUG, "%s: %s pressed, action is %s", __FUNCTION__, g_Keyboard.GetKeyName((int) key.GetButtonCode(), keyname), action.GetName().c_str());
 
   //  Play a sound based on the action
   g_audioManager.PlayActionSound(action);
@@ -4739,6 +4741,16 @@ void CApplication::Process()
 void CApplication::ProcessSlow()
 {
   g_powerManager.ProcessEvents();
+
+#if defined(__APPLE__)
+  // There is an issue on OS X that several system services ask the cursor to become visible
+  // during their startup routines.  Given that we can't control this, we hack it in by
+  // forcing the
+  if (g_Windowing.IsFullScreen())
+  { // SDL thinks it's hidden
+    Cocoa_HideMouse();
+  }
+#endif
 
   // Store our file state for use on close()
   UpdateFileState();
