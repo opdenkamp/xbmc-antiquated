@@ -388,10 +388,12 @@ void CGUIDialogMediaSource::OnOK()
   {
     m_confirmed = true;
     Close();
+    if (m_type == "video" && !CUtil::IsLiveTV(share.strPath) && 
+        !share.strPath.Left(6).Equals("rss://"))
+    {
+      CGUIWindowVideoFiles::OnAssignContent(share.strPath, 0, m_info, m_settings);
+    }
   }
-
-  if (m_type == "video" && !CUtil::IsLiveTV(share.strPath))
-    CGUIWindowVideoFiles::OnAssignContent(share.strPath, 0, m_info, m_settings);
 
   // and remove the share again
   if (shares)
