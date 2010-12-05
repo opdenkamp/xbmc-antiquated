@@ -334,21 +334,22 @@ const CPVREpg *CPVREpgs::GetEPG(CPVRChannel *channel, bool bAddIfMissing /* = fa
   return channel->m_Epg;
 }
 
-CDateTime CPVREpgs::GetFirstEPGDate(bool radio/* = false*/)
+CDateTime CPVREpgs::GetFirstEPGDate(bool radio /* = false*/)
 {
   CDateTime first        = CDateTime::GetCurrentDateTime();
-  CPVRChannels *channels = !radio ? &PVRChannelsTV : &PVRChannelsRadio;
+  CPVRChannels *channels = radio ? &PVRChannelsRadio : &PVRChannelsTV;
 
   /* check all channels */
   for (unsigned int channelPtr = 0; channelPtr < channels->size(); channelPtr++)
   {
-    if (channels->at(channelPtr).m_bIsHidden || !channels->at(channelPtr).GrabEpg())
+    /* don't include hidden channels or channels without an EPG */
+    if (channels->at(channelPtr).IsHidden() || !channels->at(channelPtr).GrabEpg())
       continue;
 
-    CPVREpg *epg = (CPVREpg *) GetEPG(&channels->at(channelPtr), true);
+    CPVREpg *epg = (CPVREpg *) GetEPG(&channels->at(channelPtr), false);
 
-    /* don't check channels that are being updated at the moment */
-    if (epg->IsUpdateRunning())
+    /* don't include epg tables that are being updated at the moment or that aren't valid */
+    if (!epg || epg->IsUpdateRunning() || !epg->IsValid())
       continue;
 
     /* sort the epg and check if the first entry has an earlier start time */
@@ -361,21 +362,22 @@ CDateTime CPVREpgs::GetFirstEPGDate(bool radio/* = false*/)
   return first;
 }
 
-CDateTime CPVREpgs::GetLastEPGDate(bool radio/* = false*/)
+CDateTime CPVREpgs::GetLastEPGDate(bool radio /* = false*/)
 {
   CDateTime last         = CDateTime::GetCurrentDateTime();
-  CPVRChannels *channels = !radio ? &PVRChannelsTV : &PVRChannelsRadio;
+  CPVRChannels *channels = radio ? &PVRChannelsRadio : &PVRChannelsTV;
 
   /* check all channels */
   for (unsigned int channelPtr = 0; channelPtr < channels->size(); channelPtr++)
   {
-    if (channels->at(channelPtr).m_bIsHidden || !channels->at(channelPtr).GrabEpg())
+    /* don't include hidden channels or channels without an EPG */
+    if (channels->at(channelPtr).IsHidden() || !channels->at(channelPtr).GrabEpg())
       continue;
 
-    CPVREpg *epg = (CPVREpg *) GetEPG(&channels->at(channelPtr), true);
+    CPVREpg *epg = (CPVREpg *) GetEPG(&channels->at(channelPtr), false);
 
-    /* don't check channels that are being updated at the moment */
-    if (epg->IsUpdateRunning())
+    /* don't include epg tables that are being updated at the moment or that aren't valid */
+    if (!epg || epg->IsUpdateRunning() || !epg->IsValid())
       continue;
 
     /* sort the epg and check if the last entry has a later end time */
@@ -388,27 +390,32 @@ CDateTime CPVREpgs::GetLastEPGDate(bool radio/* = false*/)
   return last;
 }
 
-///////////////////////////////////////////////////////////////////////////////////
 int CPVREpgs::GetEPGAll(CFileItemList* results, bool radio /* = false */)
 {
-  CPVRChannels *ch = !radio ? &PVRChannelsTV : &PVRChannelsRadio;
+  CPVRChannels *channels = radio ? &PVRChannelsRadio : &PVRChannelsTV;
 
-  for (unsigned int i = 0; i < ch->size(); i++)
+  /* include all channels */
+  for (unsigned int channelPtr = 0; channelPtr < channels->size(); channelPtr++)
   {
-    if (ch->at(i).m_bIsHidden || !ch->at(i).m_bGrabEpg)
+    /* don't include hidden channels or channels without an EPG */
+    if (channels->at(channelPtr).IsHidden() || !channels->at(channelPtr).GrabEpg())
       continue;
 
-    const CPVREpg *Epg = GetEPG(&ch->at(i), false);
-    if (Epg && !Epg->IsUpdateRunning() && Epg->IsValid())
+    CPVREpg *epg = (CPVREpg *) GetEPG(&channels->at(channelPtr), false);
+
+    /* don't include epg tables that are being updated at the moment or that aren't valid */
+    if (!epg || epg->IsUpdateRunning() || !epg->IsValid())
+      continue;
+
+    /* add all infotags */
+    const vector<CPVREpgInfoTag*> *ch_epg = epg->InfoTags();
+    for (unsigned int tagPtr = 0; tagPtr < ch_epg->size(); tagPtr++)
     {
-      const vector<CPVREpgInfoTag*> *ch_epg = Epg->InfoTags();
-      for (unsigned int i = 0; i < ch_epg->size(); i++)
-      {
-        CFileItemPtr channel(new CFileItem(*ch_epg->at(i)));
-        results->Add(channel);
-      }
+      CFileItemPtr channel(new CFileItem(*ch_epg->at(tagPtr)));
+      results->Add(channel);
     }
   }
+
   SetVariableData(results);
 
   return results->Size();
@@ -416,104 +423,96 @@ int CPVREpgs::GetEPGAll(CFileItemList* results, bool radio /* = false */)
 
 int CPVREpgs::GetEPGSearch(CFileItemList* results, const PVREpgSearchFilter &filter)
 {
-  for (unsigned int i = 0; i < PVRChannelsTV.size(); i++)
+  /* include radio and tv channels */
+  for (unsigned int radio = 0; radio <= 1; radio++)
   {
-    if (PVRChannelsTV[i].m_bIsHidden || !PVRChannelsTV[i].m_bGrabEpg)
-      continue;
-
-    const CPVREpg *Epg = GetEPG(&PVRChannelsTV[i], false);
-    if (Epg && !Epg->IsUpdateRunning() && Epg->IsValid())
+    CPVRChannels *channels = (radio == 0) ? &PVRChannelsTV : &PVRChannelsRadio;
+    for (unsigned int channelPtr = 0; channelPtr < channels->size(); channelPtr++)
     {
-      const vector<CPVREpgInfoTag*> *ch_epg = Epg->InfoTags();
+      CPVRChannel *channel = &channels->at(channelPtr);
 
-      for (unsigned int i = 0; i < ch_epg->size(); i++)
+      /* don't include hidden channels or channels without an EPG */
+      if (channel->IsHidden() || !channel->GrabEpg())
+        continue;
+
+      const CPVREpg *epg = GetEPG(channel, false);
+
+      /* don't include epg tables that are being updated at the moment or that aren't valid */
+      if (!epg || epg->IsUpdateRunning() || !epg->IsValid())
+        continue;
+
+      const vector<CPVREpgInfoTag*> *ch_epg = epg->InfoTags();
+
+      for (unsigned int tagPtr = 0; tagPtr < ch_epg->size(); tagPtr++)
       {
-        if (filter.FilterEntry(*ch_epg->at(i)))
+        if (filter.FilterEntry(*ch_epg->at(tagPtr)))
         {
-          CFileItemPtr channel(new CFileItem(*ch_epg->at(i)));
+          CFileItemPtr channel(new CFileItem(*ch_epg->at(tagPtr)));
           results->Add(channel);
         }
       }
     }
   }
 
-  for (unsigned int i = 0; i < PVRChannelsRadio.size(); i++)
-  {
-    if (PVRChannelsRadio[i].m_bIsHidden || !PVRChannelsRadio[i].m_bGrabEpg)
-      continue;
-
-    const CPVREpg *Epg = GetEPG(&PVRChannelsRadio[i], false);
-    if (Epg && !Epg->IsUpdateRunning() && Epg->IsValid())
-    {
-      const vector<CPVREpgInfoTag*> *ch_epg = Epg->InfoTags();
-
-      for (unsigned int i = 0; i < ch_epg->size(); i++)
-      {
-        if (filter.FilterEntry(*ch_epg->at(i)))
-        {
-          CFileItemPtr channel(new CFileItem(*ch_epg->at(i)));
-          results->Add(channel);
-        }
-      }
-    }
-  }
-
+  /* filter recordings */
   if (filter.m_bIgnorePresentRecordings && PVRRecordings.size() > 0)
   {
-    for (unsigned int i = 0; i < PVRRecordings.size(); i++)
+    for (unsigned int recordingPtr = 0; recordingPtr < PVRRecordings.size(); recordingPtr++)
     {
-      for (int j = 0; j < results->Size(); j++)
+      for (int resultPtr = 0; resultPtr < results->Size(); resultPtr++)
       {
-        const CPVREpgInfoTag *epgentry = results->Get(j)->GetEPGInfoTag();
+        const CPVREpgInfoTag *epgentry = results->Get(resultPtr)->GetEPGInfoTag();
         if (epgentry)
         {
-          if (epgentry->Title() != PVRRecordings[i].Title())
+          if (epgentry->Title() != PVRRecordings[recordingPtr].Title())
             continue;
-          if (epgentry->PlotOutline() != PVRRecordings[i].PlotOutline())
+          if (epgentry->PlotOutline() != PVRRecordings[recordingPtr].PlotOutline())
             continue;
-          if (epgentry->Plot() != PVRRecordings[i].Plot())
+          if (epgentry->Plot() != PVRRecordings[recordingPtr].Plot())
             continue;
 
-          results->Remove(j);
-          j--;
+          results->Remove(resultPtr);
+          resultPtr--;
         }
       }
     }
   }
 
+  /* filter timers */
   if (filter.m_bIgnorePresentTimers && PVRTimers.size() > 0)
   {
-    for (unsigned int i = 0; i < PVRTimers.size(); i++)
+    for (unsigned int timerPtr = 0; timerPtr < PVRTimers.size(); timerPtr++)
     {
-      for (int j = 0; j < results->Size(); j++)
+      for (int resultPtr = 0; resultPtr < results->Size(); resultPtr++)
       {
-        const CPVREpgInfoTag *epgentry = results->Get(j)->GetEPGInfoTag();
+        const CPVREpgInfoTag *epgentry = results->Get(resultPtr)->GetEPGInfoTag();
         if (epgentry)
         {
-          if (epgentry->ChannelTag()->ChannelNumber() != PVRTimers[i].ChannelNumber())
+          if (epgentry->ChannelTag()->ChannelNumber() != PVRTimers[timerPtr].ChannelNumber())
             continue;
-          if (epgentry->Start() < PVRTimers[i].Start())
+          if (epgentry->Start() < PVRTimers[timerPtr].Start())
             continue;
-          if (epgentry->End() > PVRTimers[i].Stop())
+          if (epgentry->End() > PVRTimers[timerPtr].Stop())
             continue;
 
-          results->Remove(j);
-          j--;
+          results->Remove(resultPtr);
+          resultPtr--;
         }
       }
     }
   }
 
+  /* remove duplicate entries */
   if (filter.m_bPreventRepeats)
   {
     unsigned int size = results->Size();
-    for (unsigned int i = 0; i < size; i++)
+    for (unsigned int resultPtr = 0; resultPtr < size; resultPtr++)
     {
-      const CPVREpgInfoTag *epgentry_1 = results->Get(i)->GetEPGInfoTag();
-      for (unsigned int j = 0; j < size; j++)
+      const CPVREpgInfoTag *epgentry_1 = results->Get(resultPtr)->GetEPGInfoTag();
+      for (unsigned int tagPtr = 0; tagPtr < size; tagPtr++)
       {
-        const CPVREpgInfoTag *epgentry_2 = results->Get(j)->GetEPGInfoTag();
-        if (i == j)
+        const CPVREpgInfoTag *epgentry_2 = results->Get(tagPtr)->GetEPGInfoTag();
+        if (resultPtr == tagPtr)
           continue;
 
         if (epgentry_1->Title() != epgentry_2->Title())
@@ -525,10 +524,10 @@ int CPVREpgs::GetEPGSearch(CFileItemList* results, const PVREpgSearchFilter &fil
         if (epgentry_1->PlotOutline() != epgentry_2->PlotOutline())
           continue;
 
-        results->Remove(j);
+        results->Remove(tagPtr);
         size = results->Size();
-        i--;
-        j--;
+        resultPtr--;
+        tagPtr--;
       }
     }
   }
@@ -537,6 +536,8 @@ int CPVREpgs::GetEPGSearch(CFileItemList* results, const PVREpgSearchFilter &fil
 
   return results->Size();
 }
+
+///////////////////////////////////////////////////////////////////////////////////
 
 int CPVREpgs::GetEPGChannel(unsigned int number, CFileItemList* results, bool radio)
 {
