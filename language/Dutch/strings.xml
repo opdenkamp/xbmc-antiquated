@@ -15,7 +15,7 @@
   <string id="6">XBMC SVN</string>
   <string id="7">Bestandsbeheer</string>
   <string id="8">Weer</string>
-  <string id="9">xbmc media center</string>
+  <string id="9">XBMC Media Center</string>
   <string id="11">Maandag</string>
   <string id="12">Dinsdag</string>
   <string id="13">Woensdag</string>
@@ -311,7 +311,7 @@
   <string id="339">Digitaal</string>
   <string id="340">Diverse artiesten</string>
   <string id="341">DVD afspelen</string>
-  <string id="342">Films</string>
+  <string id="342">Speelfilms</string>
   <string id="343">Framerate aanpassen</string>
   <string id="344">Acteurs</string>
   <string id="345">Jaar</string>
@@ -343,12 +343,12 @@
   <string id="374">Bewolkt</string>
   <string id="375">Sneeuw</string>
   <string id="376">Regen</string>
-  <string id="377">Lichtelijk</string>
+  <string id="377">Lichte</string>
   <string id="378">AM</string>
   <string id="379">PM</string>
   <string id="380">Buien</string>
   <string id="381">Lichte</string>
-  <string id="382">Verspreid</string>
+  <string id="382">Verstrooide</string>
   <string id="383">Wind</string>
   <string id="384">Sterk</string>
   <string id="385">Mooi</string>
@@ -357,11 +357,11 @@
   <string id="388">Vroeg</string>
   <string id="389">Buien</string>
   <string id="390">Sneeuwbuien</string>
-  <string id="391">min.</string>
-  <string id="392">gem.</string>
-  <string id="393">max</string>
-  <string id="394">Nevel</string>
-  <string id="395">Mist</string>
+  <string id="391">Min</string>
+  <string id="392">Gem.</string>
+  <string id="393">Max.</string>
+  <string id="394">Mist</string>
+  <string id="395">Heiig</string>
   <string id="396">Locatie selecteren</string>
   <string id="397">Vernieuwingstijd</string>
   <string id="398">Eenheid temperatuur</string>
@@ -562,7 +562,7 @@
   <string id="611">Voer nummer in</string>
   <string id="612">Bits/Sample</string>
   <string id="613">Sample frequentie</string>
-  <string id="620">CD's kopiëren</string>
+  <string id="620">CD's importeren</string>
   <string id="621">Encoder</string>
   <string id="622">Kwaliteit</string>
   <string id="623">Bitsnelheid</string>
@@ -849,7 +849,7 @@
   <string id="10014">Instellingen - Weer</string>
   <string id="10015">Instellingen - Muziek</string>
   <string id="10016">Instellingen - Systeem</string>
-  <string id="10017">Instellingen - Films</string>
+  <string id="10017">Instellingen - Video's</string>
   <string id="10018">Instellingen - Netwerk</string>
   <string id="10019">Instellingen - Uiterlijk</string>
   <string id="10020">Scripts</string>
@@ -1202,7 +1202,7 @@
   <string id="13384">Stem - Poort 2</string>
   <string id="13385">Stem - Poort 3</string>
   <string id="13386">Op tijd gebaseerd zoeken</string>
-  <string id="13387">Track weergeven als (rechts)</string>
+  <string id="13387">In rechter kolom van lijst weergeven:</string>
   <string id="13388">Preset</string>
   <string id="13389">Er zijn geen presets beschikbaar voor deze visualisatie</string>
   <string id="13390">Er zijn geen instellingen beschikbaar voor deze visualisatie</string>
@@ -1228,7 +1228,7 @@
   <string id="13410">Op Last.FM beluisteren</string>
   <string id="13411">Minimale ventilatorsnelheid</string>
   <string id="13413">Download</string>
-  <string id="13414">Artiest weergeven die alleen op verzamel-CD's voorkomt</string>
+  <string id="13414">Artiesten weergeven die alleen op verzamel CD's voorkomen</string>
   <string id="13415">Rendermethode</string>
   <string id="13416">Automatisch detecteren</string>
   <string id="13417">Eenvoudige shaders (ARB)</string>
@@ -1331,7 +1331,7 @@
   <string id="14068">Geef het IP-adres</string>
   <string id="14069">Instellingen nu toepassen?</string>
   <string id="14070">Instellingen toepassen</string>
-  <string id="14071">Bestanden hernoemen en verwijderen toestaan</string>
+  <string id="14071">Hernoemen en verwijderen van bestanden toestaan</string>
   <string id="14074">Tijdzone</string>
   <string id="14075">Automatische zomer-/wintertijd</string>
   <string id="14076">Aan favorieten toevoegen</string>
@@ -1370,7 +1370,7 @@
   <string id="15111">Thema</string>
   <string id="15112">Standaard thema</string>
   <string id="15200">Last.FM</string>
-  <string id="15201">Afgespeelde tracks op Last.FM bijhouden</string>
+  <string id="15201">Afgespeelde nummers op Last.FM bijhouden</string>
   <string id="15202">Last.FM-gebruikersnaam</string>
   <string id="15203">Last.FM-wachtwoord</string>
   <string id="15204">Verbinding mislukt</string>
@@ -1386,7 +1386,7 @@
   <string id="15214">Geleidelijke A/V-synchronisatie gebruiken</string>
   <string id="15215">Bestandsnamen in miniatuurweergave verbergen</string>
   <string id="15216">Afspelen in feestmix</string>
-  <string id="15217">Nummers indienen bij Libre.fm</string>
+  <string id="15217">Afgespeelde nummers op Libre.fm bijhouden</string>
   <string id="15218">Libre.fm-gebruikersnaam</string>
   <string id="15219">Libre.fm-wachtwoord</string>
   <string id="15220">Libre.fm</string>
@@ -2213,7 +2213,7 @@
   <string id="20182">Spatie</string>
   <string id="20183">Skin herladen</string>
   <string id="20184">Draaien op basis van EXIF-informatie</string>
-  <string id="20185">Posterstijl voor series gebruiken</string>
+  <string id="20185">Posterstijl voor tv-series gebruiken</string>
   <string id="20186">Even geduld...</string>
   <string id="20187">
   </string>
@@ -2288,8 +2288,8 @@
   <string id="20339">Regisseur</string>
   <string id="20340">Wilt u alle items in deze map</string>
   <string id="20341">verwijderen uit de bibliotheek?</string>
-  <string id="20342">Films</string>
-  <string id="20343">Series</string>
+  <string id="20342">Speelfilms</string>
+  <string id="20343">TV-Series</string>
   <string id="20344">Deze map bevat</string>
   <string id="20345">Automatisch scannen</string>
   <string id="20346">Ook onderliggende mappen scannen</string>
@@ -2332,8 +2332,8 @@
   <string id="20383">Geselecteerde map bevat 1 video</string>
   <string id="20384">Aan serie koppelen</string>
   <string id="20385">Van serie loskoppelen</string>
-  <string id="20386">Onlangs toegevoegde films</string>
-  <string id="20387">Onlangs toegevoegde afleveringen series</string>
+  <string id="20386">Onlangs toegevoegde speelfilms</string>
+  <string id="20387">Onlangs toegevoegde afleveringen tv-series</string>
   <string id="20388">Filmstudio's</string>
   <string id="20389">Muziekvideo's</string>
   <string id="20390">Onlangs toegevoegde muziekvideo's</string>
@@ -2377,7 +2377,7 @@
   <string id="20430">Miniaturen en fanart exporteren?</string>
   <string id="20431">Oude bestanden overschrijven?</string>
   <string id="20432">Pad uitsluiten van bibliotheekupdates</string>
-  <string id="20433">Miniaturen en vlaggen extraheren</string>
+  <string id="20433">Miniaturen en codec informatie uitlezen</string>
   <string id="20434">Sets</string>
   <string id="20435">Filmsetthumb kiezen</string>
   <string id="20436">Acteurminiaturen exporteren</string>
@@ -2412,7 +2412,7 @@
   <string id="21360">UPnP-server inschakelen</string>
   <string id="21364">Gedeelde media wijzigen</string>
   <string id="21365">Gedeelde media verwijderen</string>
-  <string id="21366">Ondertitelmap</string>
+  <string id="21366">Map voor ondertitels...</string>
   <string id="21367">Video - alternatieve ondertitelmap</string>
   <string id="21369">Muis inschakelen</string>
   <string id="21370">Navigatiegeluiden afspelen tijdens afspelen van media</string>
@@ -2458,10 +2458,10 @@
   <string id="21410">in laatste</string>
   <string id="21411">niet in laatste</string>
   <string id="21412">Scrapers</string>
-  <string id="21413">Standaard filmscraper</string>
-  <string id="21414">Standaard seriescraper</string>
-  <string id="21415">Standaard muziekvideoscraper</string>
-  <string id="21416">Fallback gebaseerd op scrapertaal</string>
+  <string id="21413">Standaard speelfilm scraper</string>
+  <string id="21414">Standaard tv-serie scraper</string>
+  <string id="21415">Standaard muziekvideo scraper</string>
+  <string id="21416">Alternatieven toestaan op basis van originele scraper taal</string>
   <string id="21417">- Instellingen </string>
   <string id="21418">Meertalig</string>
   <string id="21419">Geen scrapers beschikbaar</string>
