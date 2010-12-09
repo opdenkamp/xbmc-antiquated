@@ -218,56 +218,54 @@ CDateTime CPVREpg::GetLastEPGDate()
   return last;
 }
 
-bool CPVREpg::Add(const PVR_PROGINFO *data, bool bUpdateDatabase /* = false */)
+bool CPVREpg::UpdateEntry(const PVR_PROGINFO *data, bool bUpdateDatabase /* = false */)
 {
-  if (data)
-  {
-    long uniqueBroadcastID      = data->uid;
-    CPVREpgInfoTag *InfoTag     = (CPVREpgInfoTag *)GetInfoTag(uniqueBroadcastID, data->starttime);
+  if (!data)
+    return false;
 
+  long uniqueBroadcastID      = data->uid;
+  CPVREpgInfoTag *InfoTag     = (CPVREpgInfoTag *)GetInfoTag(uniqueBroadcastID, data->starttime);
+
+  /* create a new tag if no tag with this ID exists */
+  if (!InfoTag)
+  {
+    InfoTag = new CPVREpgInfoTag(uniqueBroadcastID);
     if (!InfoTag)
     {
-      InfoTag = new CPVREpgInfoTag(uniqueBroadcastID);
-      if (!InfoTag)
-      {
-        CLog::Log(LOGERROR, "%s - Couldn't create new infotag", __FUNCTION__);
-        return false;
-      }
-
-      push_back(InfoTag);
+      CLog::Log(LOGERROR, "%s - Couldn't create new infotag", __FUNCTION__);
+      return false;
     }
-
-    CStdString path;
-    path.Format("pvr://guide/channel-%04i/%s.epg", m_Channel->ChannelNumber(), InfoTag->Start().GetAsDBDateTime().c_str());
-    InfoTag->SetPath(path);
-    InfoTag->SetStart((time_t)data->starttime);
-    InfoTag->SetEnd((time_t)data->endtime);
-    InfoTag->SetTitle(data->title);
-    InfoTag->SetPlotOutline(data->subtitle);
-    InfoTag->SetPlot(data->description);
-    InfoTag->SetGenre(data->genre_type, data->genre_sub_type);
-    InfoTag->SetParentalRating(data->parental_rating);
-    InfoTag->SetIcon(m_Channel->Icon());
-    InfoTag->m_Epg = this;
-
-    PVREpgs.UpdateFirstAndLastEPGDates(*InfoTag);
-
-    m_bIsSorted = false;
-
-    if (bUpdateDatabase)
-    {
-      bool retval;
-      CTVDatabase *database = g_PVRManager.GetTVDatabase();
-      database->Open();
-      retval = database->UpdateEPGEntry(*InfoTag);
-      database->Close();
-      return retval;
-    }
-
-    return true;
+    push_back(InfoTag);
   }
 
-  return false;
+  CStdString path;
+  path.Format("pvr://guide/channel-%04i/%s.epg", m_Channel->ChannelNumber(), InfoTag->Start().GetAsDBDateTime().c_str());
+  InfoTag->SetPath(path);
+  InfoTag->SetStart((time_t)data->starttime);
+  InfoTag->SetEnd((time_t)data->endtime);
+  InfoTag->SetTitle(data->title);
+  InfoTag->SetPlotOutline(data->subtitle);
+  InfoTag->SetPlot(data->description);
+  InfoTag->SetGenre(data->genre_type, data->genre_sub_type);
+  InfoTag->SetParentalRating(data->parental_rating);
+  InfoTag->SetIcon(m_Channel->Icon());
+  InfoTag->m_Epg = this;
+
+  PVREpgs.UpdateFirstAndLastEPGDates(*InfoTag);
+
+  m_bIsSorted = false;
+
+  if (bUpdateDatabase)
+  {
+    bool retval;
+    CTVDatabase *database = g_PVRManager.GetTVDatabase();
+    database->Open();
+    retval = database->UpdateEPGEntry(*InfoTag);
+    database->Close();
+    return retval;
+  }
+
+  return true;
 }
 
 bool CPVREpg::RemoveOverlappingEvents()

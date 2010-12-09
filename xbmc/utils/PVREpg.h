@@ -58,7 +58,7 @@ public:
   bool IsUpdateRunning() const { return m_bUpdateRunning; }
   void SetUpdate(bool OnOff) { m_bUpdateRunning = OnOff; }
 
-  bool Add(const PVR_PROGINFO *data, bool bUpdateDatabase = false);
+  bool UpdateEntry(const PVR_PROGINFO *data, bool bUpdateDatabase = false);
 
   /**
    * Remove overlapping events from the tables
