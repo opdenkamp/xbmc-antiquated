@@ -124,6 +124,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pvrclient_mptv", "..\..\xbmc\pvrclients\MediaPortal\project\VS2008Express\XBMC_MPTV.vcproj", "{74C9642E-1988-48DC-8404-11717C355378}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pvrclient_hts", "..\..\xbmc\pvrclients\tvheadend\project\VS2008Express\XBMC_hts.vcproj", "{2F4A2296-3E00-4881-B6BC-1B7ADAC3CBF4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{00700E12-A63B-4E54-B962-4011A90584BD} = {00700E12-A63B-4E54-B962-4011A90584BD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libdts_dll", "..\..\xbmc\cores\dvdplayer\Codecs\libdts\vc++\libdts.vcproj", "{F93133AB-EB51-4955-AEDF-639632891042}"
 EndProject
@@ -528,6 +531,14 @@ Global
 		{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}.Release (DirectX)|Win32.Build.0 = Release|Win32
 		{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}.Release (OpenGL)|Win32.ActiveCfg = Release|Win32
 		{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}.Release (OpenGL)|Win32.Build.0 = Release|Win32
+		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Debug (DirectX)|Win32.ActiveCfg = Debug|Win32
+		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Debug (DirectX)|Win32.Build.0 = Debug|Win32
+		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Debug (OpenGL)|Win32.ActiveCfg = Debug|Win32
+		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Debug (OpenGL)|Win32.Build.0 = Debug|Win32
+		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Release (DirectX)|Win32.ActiveCfg = Release|Win32
+		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Release (DirectX)|Win32.Build.0 = Release|Win32
+		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Release (OpenGL)|Win32.ActiveCfg = Release|Win32
+		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Release (OpenGL)|Win32.Build.0 = Release|Win32
 		{838CDE27-AFDF-449F-9981-A78903C9C71E}.Debug (DirectX)|Win32.ActiveCfg = Debug|Win32
 		{838CDE27-AFDF-449F-9981-A78903C9C71E}.Debug (DirectX)|Win32.Build.0 = Debug|Win32
 		{838CDE27-AFDF-449F-9981-A78903C9C71E}.Debug (OpenGL)|Win32.ActiveCfg = Debug|Win32
@@ -736,14 +747,6 @@ Global
 		{1E2FB608-3DD2-4021-A598-90008FA6DE85}.Release (DirectX)|Win32.Build.0 = Release|Win32
 		{1E2FB608-3DD2-4021-A598-90008FA6DE85}.Release (OpenGL)|Win32.ActiveCfg = Release|Win32
 		{1E2FB608-3DD2-4021-A598-90008FA6DE85}.Release (OpenGL)|Win32.Build.0 = Release|Win32
-		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Debug (DirectX)|Win32.ActiveCfg = Debug|Win32
-		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Debug (DirectX)|Win32.Build.0 = Debug|Win32
-		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Debug (OpenGL)|Win32.ActiveCfg = Debug|Win32
-		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Debug (OpenGL)|Win32.Build.0 = Debug|Win32
-		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Release (DirectX)|Win32.ActiveCfg = Release|Win32
-		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Release (DirectX)|Win32.Build.0 = Release|Win32
-		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Release (OpenGL)|Win32.ActiveCfg = Release|Win32
-		{6D8C91F8-992F-4C83-9DE3-485D64EF8420}.Release (OpenGL)|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
