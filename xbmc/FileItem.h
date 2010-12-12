@@ -33,7 +33,6 @@
 #include "utils/LabelFormatter.h"
 #include "GUIPassword.h"
 #include "utils/CriticalSection.h"
-#include "utils/Observer.h"
 #include "VideoDatabase.h"
 
 #include <vector>
@@ -67,7 +66,7 @@ class CMediaSource;
   \sa CFileItemList
   */
 class CFileItem :
-  public CGUIListItem, public IArchivable, public ISerializable, public Observer
+  public CGUIListItem, public IArchivable, public ISerializable
 {
 public:
   CFileItem(void);
@@ -90,7 +89,6 @@ public:
 
   void Reset();
   const CFileItem& operator=(const CFileItem& item);
-  virtual void Notify(const Observable& obs, const CStdString& msg);
   virtual void Archive(CArchive& ar);
   virtual void Serialize(CVariant& value);
   virtual bool IsFileItem() const { return true; };
