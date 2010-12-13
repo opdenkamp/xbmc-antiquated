@@ -92,7 +92,6 @@ private:
 
 public:
   CPVRTimerInfoTag();
-  CPVRTimerInfoTag(const CFileItem& item);
 
   bool operator ==(const CPVRTimerInfoTag& right) const;
   bool operator !=(const CPVRTimerInfoTag& right) const;
