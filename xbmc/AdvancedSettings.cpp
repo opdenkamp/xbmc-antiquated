@@ -274,6 +274,8 @@ void CAdvancedSettings::Initialize()
   m_iUserDefinedEPGTimeCorrection = 0;
 
   m_measureRefreshrate = false;
+
+  m_cacheMemBufferSize = (1048576 * 5);
 }
 
 bool CAdvancedSettings::Load()
@@ -502,6 +504,7 @@ bool CAdvancedSettings::Load()
     XMLUtils::GetInt(pElement, "curllowspeedtime", m_curllowspeedtime, 1, 1000);
     XMLUtils::GetInt(pElement, "curlretries", m_curlretries, 0, 10);
     XMLUtils::GetBoolean(pElement,"disableipv6", m_curlDisableIPV6);
+    XMLUtils::GetUInt(pElement, "cachemembuffersize", m_cacheMemBufferSize);
   }
 
   pElement = pRootElement->FirstChildElement("samba");
