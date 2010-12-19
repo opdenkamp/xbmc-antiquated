@@ -62,7 +62,7 @@
 #include "StringUtils.h"
 #include "utils/log.h"
 #include "utils/FileUtils.h"
-#include "utils/PVRRecordings.h"
+#include "pvr/PVRRecordings.h"
 #include "utils/AnnouncementManager.h"
 
 #include "addons/Skin.h"

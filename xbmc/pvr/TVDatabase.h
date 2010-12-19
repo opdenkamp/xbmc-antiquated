@@ -24,8 +24,8 @@
 #include "DateTime.h"
 #include "FileItem.h"
 #include "settings/VideoSettings.h"
-#include "utils/PVREpgs.h"
-#include "utils/PVRChannels.h"
+#include "PVREpgs.h"
+#include "PVRChannels.h"
 
 class CTVDatabase : public CDatabase
 {

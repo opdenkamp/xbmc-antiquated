@@ -24,9 +24,9 @@
 #include "AdvancedSettings.h"
 #include "utils/log.h"
 
-#include "utils/PVREpgInfoTag.h"
-#include "utils/PVRChannelGroups.h"
-#include "utils/PVRChannelGroup.h"
+#include "PVREpgInfoTag.h"
+#include "PVRChannelGroups.h"
+#include "PVRChannelGroup.h"
 
 using namespace std;
 

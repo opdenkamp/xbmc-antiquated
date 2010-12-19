@@ -42,10 +42,10 @@
 #include "GUIDialogSelect.h"
 
 #include "PVRManager.h"
-#include "utils/PVRChannelGroups.h"
-#include "utils/PVRChannelGroup.h"
-#include "utils/PVREpgInfoTag.h"
-#include "utils/PVRTimerInfoTag.h"
+#include "PVRChannelGroups.h"
+#include "PVRChannelGroup.h"
+#include "PVREpgInfoTag.h"
+#include "PVRTimerInfoTag.h"
 
 #define CHANNELCHECKDELTA     600 // seconds before checking for changes inside channels list
 #define TIMERCHECKDELTA       300 // seconds before checking for changes inside timers list
