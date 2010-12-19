@@ -76,10 +76,9 @@ public:
   float GetFPS() const;
   const CStdString& GetMediaDir() const { return m_strMediaDir; }
   void SetMediaDir(const CStdString& strMediaDir);
-  bool IsWidescreen() const { return m_bWidescreen; }
   bool SetViewPort(float fx, float fy , float fwidth, float fheight, bool intersectPrevious = false);
   void RestoreViewPort();
-  const CRect& GetViewWindow() const;
+  const CRect GetViewWindow() const;
   void SetViewWindow(float left, float top, float right, float bottom);
   bool IsFullScreenRoot() const;
   bool ToggleFullScreenRoot();
@@ -161,7 +160,6 @@ public:
   void ApplyHardwareTransform();
   void RestoreHardwareTransform();
   void ClipRect(CRect &vertex, CRect &texture, CRect *diffuse = NULL);
-  void ClipToViewWindow();
   inline void ResetWindowTransform()
   {
     while (m_groupTransform.size())
@@ -189,15 +187,11 @@ public:
   }
 
 protected:
-  void SetFullScreenViewWindow(RESOLUTION &res);
-
   std::stack<CRect> m_viewStack;
 
   int m_iScreenHeight;
   int m_iScreenWidth;
   int m_iScreenId;
-  int m_iBackBufferCount;
-  bool m_bWidescreen;
   CStdString m_strMediaDir;
   CRect m_videoRect;
   bool m_bFullScreenRoot;
