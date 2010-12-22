@@ -47,6 +47,21 @@ bool CTVDatabase::Open()
   return CDatabase::Open(g_advancedSettings.m_databaseTV);
 }
 
+bool CTVDatabase::OpenDS()
+{
+  try
+  {
+    if (NULL == m_pDB.get()) return false;
+    if (NULL == m_pDS.get()) return false;
+  }
+  catch (...)
+  {
+    return false;
+  }
+
+  return true;
+}
+
 bool CTVDatabase::CreateTables()
 {
   try
@@ -126,13 +141,13 @@ CDateTime CTVDatabase::GetLastEPGScanTime()
   if (lastScanTime.IsValid())
     return lastScanTime;
 
+  if (!OpenDS())
+    return -1;
+
+  CStdString SQL=FormatSQL("select * from LastEPGScan");
+
   try
   {
-    if (NULL == m_pDB.get()) return -1;
-    if (NULL == m_pDS.get()) return -1;
-
-    CStdString SQL=FormatSQL("select * from LastEPGScan");
-
     m_pDS->query(SQL.c_str());
 
     if (m_pDS->num_rows() > 0)
@@ -160,11 +175,11 @@ CDateTime CTVDatabase::GetLastEPGScanTime()
 
 bool CTVDatabase::UpdateLastEPGScan(const CDateTime lastScan)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     CLog::Log(LOGDEBUG, "%s - updating last scan time to '%s'", __FUNCTION__, lastScan.GetAsDBDateTime().c_str());
     lastScanTime = lastScan;
 
@@ -197,11 +212,11 @@ bool CTVDatabase::UpdateLastEPGScan(const CDateTime lastScan)
 
 int CTVDatabase::GetLastChannel()
 {
+  if (!OpenDS())
+    return -1;
+
   try
   {
-    if (NULL == m_pDB.get()) return -1;
-    if (NULL == m_pDS.get()) return -1;
-
     CStdString SQL=FormatSQL("select * from LastChannel");
 
     m_pDS->query(SQL.c_str());
@@ -229,11 +244,11 @@ int CTVDatabase::GetLastChannel()
 
 bool CTVDatabase::UpdateLastChannel(const CPVRChannel &info)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     if (info.ChannelID() < 0)   // no match found, update required
     {
       return false;
@@ -270,11 +285,11 @@ bool CTVDatabase::UpdateLastChannel(const CPVRChannel &info)
 
 bool CTVDatabase::EraseClients()
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     CStdString strSQL=FormatSQL("delete from Clients");
     m_pDS->exec(strSQL.c_str());
     strSQL=FormatSQL("delete from LastChannel");
@@ -292,11 +307,11 @@ bool CTVDatabase::EraseClients()
 
 long CTVDatabase::AddClient(const CStdString &client, const CStdString &guid)
 {
+  if (!OpenDS())
+    return -1;
+
   try
   {
-    if (NULL == m_pDB.get()) return -1;
-    if (NULL == m_pDS.get()) return -1;
-
     long clientId = GetClientId(guid);
     if (clientId < 0)
     {
@@ -321,12 +336,12 @@ long CTVDatabase::GetClientId(const CStdString& guid)
 {
   CStdString SQL;
 
+  if (!OpenDS())
+    return -1;
+
   try
   {
     long clientId = -1;
-
-    if (NULL == m_pDB.get()) return -1;
-    if (NULL == m_pDS.get()) return -1;
 
     SQL = FormatSQL("select idClient from Clients where GUID like '%s'", guid.c_str());
 
@@ -349,11 +364,11 @@ long CTVDatabase::GetClientId(const CStdString& guid)
 
 bool CTVDatabase::EraseEPG()
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     CStdString strSQL=FormatSQL("delete from GuideData");
 
     m_pDS->exec(strSQL.c_str());
@@ -368,10 +383,11 @@ bool CTVDatabase::EraseEPG()
 
 bool CTVDatabase::EraseEPGForChannel(long channelID, CDateTime after)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
     CStdString strSQL;
 
     if (after == NULL)
@@ -393,11 +409,11 @@ bool CTVDatabase::EraseEPGForChannel(long channelID, CDateTime after)
 bool CTVDatabase::EraseOldEPG()
 {
   //delete programs from database that are more than 1 day old
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     CDateTime yesterday = CDateTime::GetCurrentDateTime()-CDateTimeSpan(1, 0, 0, 0);
     CStdString strSQL = FormatSQL("DELETE FROM GuideData WHERE EndTime < '%s'", yesterday.GetAsDBDateTime().c_str());
     m_pDS->exec(strSQL.c_str());
@@ -412,11 +428,11 @@ bool CTVDatabase::EraseOldEPG()
 
 long CTVDatabase::AddEPGEntry(const CPVREpgInfoTag &info, bool oneWrite, bool firstWrite, bool lastWrite)
 {
+  if (!OpenDS())
+    return -1;
+
   try
   {
-    if (NULL == m_pDB.get()) return -1;
-    if (NULL == m_pDS.get()) return -1;
-
     if (!oneWrite && firstWrite)
       m_pDS->insert();
 
@@ -461,8 +477,9 @@ bool CTVDatabase::UpdateEPGEntry(const CPVREpgInfoTag &info, bool oneWrite, bool
 {
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
+    if (!OpenDS())
+      return false;
+
     if (NULL == m_pDS2.get()) return false;
 
     if (!oneWrite && firstWrite)
@@ -545,12 +562,11 @@ bool CTVDatabase::UpdateEPGEntry(const CPVREpgInfoTag &info, bool oneWrite, bool
 
 bool CTVDatabase::RemoveEPGEntry(const CPVREpgInfoTag &info)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
-
     if (info.UniqueBroadcastID() < 0)   // no match found, update required
       return false;
 
@@ -568,11 +584,11 @@ bool CTVDatabase::RemoveEPGEntry(const CPVREpgInfoTag &info)
 
 bool CTVDatabase::RemoveEPGEntries(unsigned int channelID, const CDateTime &start, const CDateTime &end)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     CStdString strSQL;
     if (channelID < 0)
     {
@@ -596,11 +612,11 @@ bool CTVDatabase::RemoveEPGEntries(unsigned int channelID, const CDateTime &star
 
 bool CTVDatabase::GetEPGForChannel(CPVREpg *epg, const CDateTime &start, const CDateTime &end)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     CPVRChannel *channel = epg->Channel();
     if (!channel)
       return false;
@@ -653,12 +669,12 @@ bool CTVDatabase::GetEPGForChannel(CPVREpg *epg, const CDateTime &start, const C
 CDateTime CTVDatabase::GetEPGDataStart(int channelID)
 {
   CDateTime lastProgramme;
+  if (!OpenDS())
+    return lastProgramme;
+
   try
   {
     CStdString SQL;
-
-    if (NULL == m_pDB.get()) return lastProgramme;
-    if (NULL == m_pDS.get()) return lastProgramme;
 
     if (channelID != -1)
     {
@@ -689,12 +705,12 @@ CDateTime CTVDatabase::GetEPGDataStart(int channelID)
 CDateTime CTVDatabase::GetEPGDataEnd(int channelID)
 {
   CDateTime lastProgramme;
+  if (!OpenDS())
+    return lastProgramme;
+
   try
   {
     CStdString SQL;
-
-    if (NULL == m_pDB.get()) return lastProgramme;
-    if (NULL == m_pDS.get()) return lastProgramme;
 
     if (channelID != -1)
     {
@@ -725,11 +741,11 @@ CDateTime CTVDatabase::GetEPGDataEnd(int channelID)
 
 bool CTVDatabase::EraseChannels()
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     CStdString strSQL=FormatSQL("delete from Channels");
 
     m_pDS->exec(strSQL.c_str());
@@ -744,11 +760,11 @@ bool CTVDatabase::EraseChannels()
 
 bool CTVDatabase::EraseClientChannels(long clientID)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     CStdString strSQL=FormatSQL("delete from Channels WHERE Channels.idClient = '%u'", clientID);
 
     m_pDS->exec(strSQL.c_str());
@@ -767,8 +783,8 @@ long CTVDatabase::AddDBChannel(const CPVRChannel &info, bool oneWrite, bool firs
   try
   {
     if (info.ClientID() < 0) return -1;
-    if (NULL == m_pDB.get()) return -1;
-    if (NULL == m_pDS.get()) return -1;
+    if (!OpenDS())
+      return -1;
 
     long channelId = info.ChannelID();
     if (channelId < 0)
@@ -809,11 +825,11 @@ long CTVDatabase::AddDBChannel(const CPVRChannel &info, bool oneWrite, bool firs
 
 bool CTVDatabase::RemoveDBChannel(const CPVRChannel &info)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     long channelId = info.ChannelID();
     long clientId = info.ClientID();
 
@@ -836,11 +852,11 @@ bool CTVDatabase::RemoveDBChannel(const CPVRChannel &info)
 
 long CTVDatabase::UpdateDBChannel(const CPVRChannel &info)
 {
+  if (!OpenDS())
+    return -1;
+
   try
   {
-    if (NULL == m_pDB.get()) return -1;
-    if (NULL == m_pDS.get()) return -1;
-
     long channelId = info.ChannelID();
 
     CStdString SQL;
@@ -885,11 +901,11 @@ long CTVDatabase::UpdateDBChannel(const CPVRChannel &info)
 
 bool CTVDatabase::HasChannel(const CPVRChannel &info)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     CStdString SQL=FormatSQL("select * from Channels WHERE Channels.Name = '%s' AND Channels.ClientNumber = '%i'", info.m_strChannelName.c_str(), info.m_iClientChannelNumber);
 
     m_pDS->query(SQL.c_str());
@@ -914,11 +930,11 @@ bool CTVDatabase::HasChannel(const CPVRChannel &info)
 
 int CTVDatabase::GetDBNumChannels(bool radio)
 {
+  if (!OpenDS())
+    return 0;
+
   try
   {
-    if (NULL == m_pDB.get()) return 0;
-    if (NULL == m_pDS.get()) return 0;
-
     CStdString SQL=FormatSQL("select * from Channels WHERE Channels.radio=%u", radio);
 
     m_pDS->query(SQL.c_str());
@@ -938,12 +954,12 @@ int CTVDatabase::GetDBNumChannels(bool radio)
 
 int CTVDatabase::GetNumHiddenChannels()
 {
+  if (!OpenDS())
+    return 0;
+
   try
   {
-    if (NULL == m_pDB.get()) return 0;
-    if (NULL == m_pDS.get()) return 0;
-
-    CStdString SQL=FormatSQL("select * from Channels WHERE Channels.hide=%u", true);
+     CStdString SQL=FormatSQL("select * from Channels WHERE Channels.hide=%u", true);
 
     m_pDS->query(SQL.c_str());
 
@@ -962,11 +978,11 @@ int CTVDatabase::GetNumHiddenChannels()
 
 bool CTVDatabase::GetDBChannelList(CPVRChannels &results, bool radio)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     CStdString SQL=FormatSQL("select * from Channels WHERE Channels.radio=%u ORDER BY Channels.Number", radio);
 
     m_pDS->query(SQL.c_str());
@@ -1013,11 +1029,11 @@ bool CTVDatabase::GetDBChannelList(CPVRChannels &results, bool radio)
 
 bool CTVDatabase::EraseChannelGroups()
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     CStdString strSQL=FormatSQL("delete from ChannelGroup");
 
     m_pDS->exec(strSQL.c_str());
@@ -1035,8 +1051,8 @@ long CTVDatabase::AddChannelGroup(const CStdString &groupName, int sortOrder)
   try
   {
     if (groupName == "")      return -1;
-    if (NULL == m_pDB.get())  return -1;
-    if (NULL == m_pDS.get())  return -1;
+    if (!OpenDS())
+      return false;
 
     long groupId;
     groupId = GetChannelGroupId(groupName);
@@ -1058,11 +1074,11 @@ long CTVDatabase::AddChannelGroup(const CStdString &groupName, int sortOrder)
 
 bool CTVDatabase::DeleteChannelGroup(unsigned int GroupId)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     if (GroupId < 0)   // no match found, update required
       return false;
 
@@ -1080,11 +1096,11 @@ bool CTVDatabase::DeleteChannelGroup(unsigned int GroupId)
 
 bool CTVDatabase::GetChannelGroupList(CPVRChannelGroups &results)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     CStdString SQL = FormatSQL("select * from ChannelGroup ORDER BY ChannelGroup.sortOrder");
     m_pDS->query(SQL.c_str());
 
@@ -1113,11 +1129,11 @@ bool CTVDatabase::GetChannelGroupList(CPVRChannelGroups &results)
 
 bool CTVDatabase::SetChannelGroupName(unsigned int GroupId, const CStdString &newname)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     if (GroupId < 0)   // no match found, update required
     {
       return false;
@@ -1147,11 +1163,11 @@ bool CTVDatabase::SetChannelGroupName(unsigned int GroupId, const CStdString &ne
 
 bool CTVDatabase::SetChannelGroupSortOrder(unsigned int GroupId, int sortOrder)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     if (GroupId < 0)   // no match found, update required
       return false;
 
@@ -1180,13 +1196,12 @@ bool CTVDatabase::SetChannelGroupSortOrder(unsigned int GroupId, int sortOrder)
 long CTVDatabase::GetChannelGroupId(const CStdString &groupname)
 {
   CStdString SQL;
+  if (!OpenDS())
+    return -1;
 
   try
   {
     long lGroupId = -1;
-    if (NULL == m_pDB.get()) return lGroupId;
-    if (NULL == m_pDS.get()) return lGroupId;
-
     SQL=FormatSQL("select idGroup from ChannelGroup where groupName like '%s'", groupname.c_str());
     m_pDS->query(SQL.c_str());
     if (!m_pDS->eof())
@@ -1204,11 +1219,11 @@ long CTVDatabase::GetChannelGroupId(const CStdString &groupname)
 
 bool CTVDatabase::EraseRadioChannelGroups()
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     CStdString strSQL=FormatSQL("delete from RadioChannelGroup");
 
     m_pDS->exec(strSQL.c_str());
@@ -1226,8 +1241,8 @@ long CTVDatabase::AddRadioChannelGroup(const CStdString &groupName, int sortOrde
   try
   {
     if (groupName == "")      return -1;
-    if (NULL == m_pDB.get())  return -1;
-    if (NULL == m_pDS.get())  return -1;
+    if (!OpenDS())
+      return -1;
 
     long groupId;
     groupId = GetRadioChannelGroupId(groupName);
@@ -1249,11 +1264,11 @@ long CTVDatabase::AddRadioChannelGroup(const CStdString &groupName, int sortOrde
 
 bool CTVDatabase::DeleteRadioChannelGroup(unsigned int GroupId)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     if (GroupId < 0)   // no match found, update required
       return false;
 
@@ -1271,11 +1286,11 @@ bool CTVDatabase::DeleteRadioChannelGroup(unsigned int GroupId)
 
 bool CTVDatabase::GetRadioChannelGroupList(CPVRChannelGroups &results)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     CStdString SQL = FormatSQL("select * from RadioChannelGroup ORDER BY RadioChannelGroup.sortOrder");
     m_pDS->query(SQL.c_str());
 
@@ -1304,11 +1319,11 @@ bool CTVDatabase::GetRadioChannelGroupList(CPVRChannelGroups &results)
 
 bool CTVDatabase::SetRadioChannelGroupName(unsigned int GroupId, const CStdString &newname)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     if (GroupId < 0)   // no match found, update required
     {
       return false;
@@ -1338,11 +1353,11 @@ bool CTVDatabase::SetRadioChannelGroupName(unsigned int GroupId, const CStdStrin
 
 bool CTVDatabase::SetRadioChannelGroupSortOrder(unsigned int GroupId, int sortOrder)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     if (GroupId < 0)   // no match found, update required
       return false;
 
@@ -1370,14 +1385,14 @@ bool CTVDatabase::SetRadioChannelGroupSortOrder(unsigned int GroupId, int sortOr
 
 long CTVDatabase::GetRadioChannelGroupId(const CStdString &groupname)
 {
+  if (!OpenDS())
+    return -1;
+
   CStdString SQL;
 
   try
   {
     long lGroupId = -1;
-    if (NULL == m_pDB.get()) return lGroupId;
-    if (NULL == m_pDS.get()) return lGroupId;
-
     SQL=FormatSQL("select idGroup from RadioChannelGroup where groupName like '%s'", groupname.c_str());
     m_pDS->query(SQL.c_str());
     if (!m_pDS->eof())
@@ -1395,11 +1410,11 @@ long CTVDatabase::GetRadioChannelGroupId(const CStdString &groupname)
 
 bool CTVDatabase::EraseChannelSettings()
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-
     CStdString strSQL=FormatSQL("delete from ChannelSettings");
 
     m_pDS->exec(strSQL.c_str());
@@ -1414,10 +1429,11 @@ bool CTVDatabase::EraseChannelSettings()
 
 bool CTVDatabase::GetChannelSettings(unsigned int channelID, CVideoSettings &settings)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
     if (channelID < 0) return false;
 
     CStdString strSQL=FormatSQL("select * from ChannelSettings where idChannel like '%u'", channelID);
@@ -1461,10 +1477,11 @@ bool CTVDatabase::GetChannelSettings(unsigned int channelID, CVideoSettings &set
 
 bool CTVDatabase::SetChannelSettings(unsigned int channelID, const CVideoSettings &settings)
 {
+  if (!OpenDS())
+    return false;
+
   try
   {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
     if (channelID < 0)
     {
       // no match found, update required
@@ -1514,4 +1531,3 @@ bool CTVDatabase::SetChannelSettings(unsigned int channelID, const CVideoSetting
     return false;
   }
 }
-

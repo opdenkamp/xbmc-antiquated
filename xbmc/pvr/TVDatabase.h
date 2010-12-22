@@ -100,5 +100,6 @@ private:
 //  char *InsertSQLString(char *dest, const char *src);
   virtual bool CreateTables();
   virtual bool UpdateOldVersion(int version);
+  bool OpenDS();
   CDateTime lastScanTime;
 };
