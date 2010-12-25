@@ -144,10 +144,10 @@ CStdString CTVDatabase::GetSingleValue(const CStdString &strTable, const CStdStr
 
   CStdString strQueryBase = "select %s from %s";
   if (!strWhereClause.IsEmpty())
-    strQueryBase.AppendFormat("where %s", strWhereClause.c_str());
+    strQueryBase.AppendFormat(" where %s", strWhereClause.c_str());
 
   CStdString strQuery = FormatSQL(strQueryBase,
-      strTable.c_str(), strColumn.c_str());
+      strColumn.c_str(), strTable.c_str());
 
   try
   {
@@ -157,7 +157,7 @@ CStdString CTVDatabase::GetSingleValue(const CStdString &strTable, const CStdStr
     m_pDS->query(strQuery.c_str());
 
     if (m_pDS->num_rows() > 0)
-      strReturn = m_pDS->fv(strColumn.c_str()).get_asString();
+      strReturn = m_pDS->fv(0).get_asString();
 
     m_pDS->close();
   }
@@ -226,34 +226,12 @@ bool CTVDatabase::UpdateLastEPGScan(const CDateTime lastScan)
 
 int CTVDatabase::GetLastChannel()
 {
-  if (!OpenDS())
+  CStdString strValue = GetSingleValue("LastChannel", "idChannel");
+
+  if (strValue.IsEmpty())
     return -1;
 
-  try
-  {
-    CStdString SQL=FormatSQL("select * from LastChannel");
-
-    m_pDS->query(SQL.c_str());
-
-    if (m_pDS->num_rows() > 0)
-    {
-      int channelId = m_pDS->fv("idChannel").get_asInt();
-
-      m_pDS->close();
-      return channelId;
-    }
-    else
-    {
-      m_pDS->close();
-      return -1;
-    }
-  }
-  catch (...)
-  {
-    CLog::Log(LOGERROR, "%s failed", __FUNCTION__);
-  }
-
-  return -1;
+  return atoi(strValue.c_str());
 }
 
 bool CTVDatabase::UpdateLastChannel(const CPVRChannel &info)
@@ -348,32 +326,13 @@ long CTVDatabase::AddClient(const CStdString &client, const CStdString &guid)
 
 long CTVDatabase::GetClientId(const CStdString& guid)
 {
-  CStdString SQL;
+  CStdString strWhereClause = FormatSQL("GUID like '%s'", guid.c_str());
+  CStdString strValue = GetSingleValue("Clients", "idClient", strWhereClause);
 
-  if (!OpenDS())
+  if (strValue.IsEmpty())
     return -1;
 
-  try
-  {
-    long clientId = -1;
-
-    SQL = FormatSQL("select idClient from Clients where GUID like '%s'", guid.c_str());
-
-    m_pDS->query(SQL.c_str());
-
-    if (!m_pDS->eof())
-      clientId = m_pDS->fv("Clients.idClient").get_asInt();
-
-    m_pDS->close();
-
-    return clientId;
-  }
-  catch (...)
-  {
-    CLog::Log(LOGERROR, "%s unable to get ClientId (%s)", __FUNCTION__, SQL.c_str());
-  }
-
-  return -1;
+  return atoi(strValue.c_str());
 }
 
 bool CTVDatabase::EraseEPG()
