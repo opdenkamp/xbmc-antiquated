@@ -50,7 +50,6 @@ public:
   bool EraseEPGForChannel(long channelID, CDateTime after = NULL);
   bool EraseChannelEPGAfterTime(long channelID, CDateTime after);
   bool EraseOldEPG();
-  long AddEPGEntry(const CPVREpgInfoTag &info, bool oneWrite = true, bool firstWrite = false, bool lastWrite = false);
   bool UpdateEPGEntry(const CPVREpgInfoTag &info, bool oneWrite = true, bool firstWrite = false, bool lastWrite = false);
   bool RemoveEPGEntry(const CPVREpgInfoTag &info);
   bool RemoveEPGEntries(unsigned int channelID, const CDateTime &start, const CDateTime &end);
@@ -72,7 +71,7 @@ public:
   /* Database Channel Group handling */
   bool EraseChannelGroups();
   long AddChannelGroup(const CStdString &groupName, int sortOrder);
-  bool DeleteChannelGroup(unsigned int GroupId);
+  bool DeleteChannelGroup(int GroupId);
   bool GetChannelGroupList(CPVRChannelGroups &results);
   bool SetChannelGroupName(unsigned int GroupId, const CStdString &newname);
   bool SetChannelGroupSortOrder(unsigned int GroupId, int sortOrder);
@@ -101,6 +100,8 @@ private:
   virtual bool CreateTables();
   virtual bool UpdateOldVersion(int version);
   bool OpenDS();
-  CStdString GetSingleValue(const CStdString &strTable, const CStdString &strColumn, const CStdString &strWhereClause = CStdString());
+  CStdString GetSingleValue(const CStdString &strTable, const CStdString &strColumn, const CStdString &strWhereClause = CStdString(), const CStdString &strOrderBy = CStdString());
+  bool DeleteValues(const CStdString &strTable, const CStdString &strWhereClause = CStdString());
+  bool ExecuteQuery(const CStdString &strQuery, bool bOpenDS = true);
   CDateTime lastScanTime;
 };
