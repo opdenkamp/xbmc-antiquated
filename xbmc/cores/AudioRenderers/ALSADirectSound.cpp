@@ -150,9 +150,9 @@ bool CALSADirectSound::Initialize(IAudioCallback* pCallback, const CStdString& d
   }
   else
   {
-    if(deviceuse == "hdmi"
-    || deviceuse == "iec958"
-    || deviceuse == "spdif")
+    if((deviceuse + ":").Left(5) == "hdmi:"
+    || (deviceuse + ":").Left(7) == "iec958:"
+    || (deviceuse + ":").Left(6) == "spdif:")
       deviceuse = "plug:" + deviceuse;
 
     if(deviceuse == "default")
@@ -624,14 +624,14 @@ void CALSADirectSound::EnumerateAudioSinks(AudioSinkList& vAudioSinks, bool pass
 {
   if (!passthrough)
   {
-    vAudioSinks.push_back(AudioSink(g_localizeStrings.Get(409), "alsa:default"));
-    vAudioSinks.push_back(AudioSink("iec958" , "alsa:plug:iec958"));
-    vAudioSinks.push_back(AudioSink("hdmi"   , "alsa:plug:hdmi"));
+    vAudioSinks.push_back(AudioSink(g_localizeStrings.Get(409) + " (ALSA)", "alsa:default"));
+    vAudioSinks.push_back(AudioSink("iec958 (ALSA)" , "alsa:plug:iec958"));
+    vAudioSinks.push_back(AudioSink("hdmi (ALSA)"   , "alsa:plug:hdmi"));
   }
   else
   {
-    vAudioSinks.push_back(AudioSink("iec958" , "alsa:iec958"));
-    vAudioSinks.push_back(AudioSink("hdmi"   , "alsa:hdmi"));
+    vAudioSinks.push_back(AudioSink("iec958 (ALSA)" , "alsa:iec958"));
+    vAudioSinks.push_back(AudioSink("hdmi (ALSA)"   , "alsa:hdmi"));
   }
 
   int n_cards = -1;
@@ -706,7 +706,7 @@ void CALSADirectSound::GenSoundLabel(AudioSinkList& vAudioSinks, CStdString sink
   {
     CStdString finalSink;
     finalSink.Format("alsa:%s", deviceString.c_str());
-    CStdString label = readableCard + " " + sink;
+    CStdString label = readableCard + " " + sink + " (ALSA)";
     vAudioSinks.push_back(AudioSink(label, finalSink));
   }
 }
