@@ -56,6 +56,8 @@ bool CTVDatabase::OpenDS()
   }
   catch (...)
   {
+    CLog::Log(LOGERROR, "%s - failed to open data source",
+        __FUNCTION__);
     return false;
   }
 
@@ -136,41 +138,53 @@ bool CTVDatabase::UpdateOldVersion(int iVersion)
   return true;
 }
 
+CStdString CTVDatabase::GetSingleValue(const CStdString &strTable, const CStdString &strColumn, const CStdString &strWhereClause /* = CStdString() */)
+{
+  CStdString strReturn;
+
+  CStdString strQueryBase = "select %s from %s";
+  if (!strWhereClause.IsEmpty())
+    strQueryBase.AppendFormat("where %s", strWhereClause.c_str());
+
+  CStdString strQuery = FormatSQL(strQueryBase,
+      strTable.c_str(), strColumn.c_str());
+
+  try
+  {
+    if (!OpenDS())
+        return strReturn;
+
+    m_pDS->query(strQuery.c_str());
+
+    if (m_pDS->num_rows() > 0)
+      strReturn = m_pDS->fv(strColumn.c_str()).get_asString();
+
+    m_pDS->close();
+  }
+  catch (...)
+  {
+    CLog::Log(LOGERROR, "%s - failed to execute query %s",
+        __FUNCTION__, strQuery.c_str());
+  }
+
+  return strReturn;
+}
+
 CDateTime CTVDatabase::GetLastEPGScanTime()
 {
   if (lastScanTime.IsValid())
     return lastScanTime;
 
-  if (!OpenDS())
+  CStdString strValue = GetSingleValue("LastEPGScan", "ScanTime");
+
+  if (strValue.IsEmpty())
     return -1;
 
-  CStdString SQL=FormatSQL("select * from LastEPGScan");
+  CDateTime lastTime;
+  lastTime.SetFromDBDateTime(strValue);
+  lastScanTime = lastTime;
 
-  try
-  {
-    m_pDS->query(SQL.c_str());
-
-    if (m_pDS->num_rows() > 0)
-    {
-      CDateTime lastTime;
-      lastTime.SetFromDBDateTime(m_pDS->fv("ScanTime").get_asString());
-      lastScanTime = lastTime;
-      m_pDS->close();
-
-      return lastTime;
-    }
-    else
-    {
-      m_pDS->close();
-      return -1;
-    }
-  }
-  catch (...)
-  {
-    CLog::Log(LOGERROR, "%s failed", __FUNCTION__);
-  }
-
-  return -1;
+  return lastTime;
 }
 
 bool CTVDatabase::UpdateLastEPGScan(const CDateTime lastScan)

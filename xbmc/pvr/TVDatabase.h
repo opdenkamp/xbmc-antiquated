@@ -101,5 +101,6 @@ private:
   virtual bool CreateTables();
   virtual bool UpdateOldVersion(int version);
   bool OpenDS();
+  CStdString GetSingleValue(const CStdString &strTable, const CStdString &strColumn, const CStdString &strWhereClause = CStdString());
   CDateTime lastScanTime;
 };
