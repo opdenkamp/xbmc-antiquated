@@ -110,6 +110,8 @@ CDateTime CMythSession::GetValue(cmyth_timestamp_t t)
     time_t time = m_dll->timestamp_to_unixtime(t); // Returns NULL if error
     if (time)
       result = CTimeUtils::GetLocalTime(time);
+    else
+      result = CTimeUtils::GetLocalTime(0);
     m_dll->ref_release(t);
   }
   else // Return epoch so 0 and NULL behave the same.
@@ -174,7 +176,8 @@ void CMythSession::SetFileItemMetaData(CFileItem &item, cmyth_proginfo_t program
    * Video Library. If the original air date is empty the date returned will be the epoch.
    */
   CStdString originalairdate = GetValue(m_dll->proginfo_originalairdate(program)).GetAsDBDate();
-  if (originalairdate != "1970-01-01")
+  if (originalairdate != "1970-01-01"
+  &&  originalairdate != "1969-12-31")
     tag->m_strFirstAired = originalairdate;
 
   /*
