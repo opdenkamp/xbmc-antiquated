@@ -203,20 +203,24 @@ int CDatabase::ResultQuery(const CStdString &strQuery)
 
 bool CDatabase::QueueInsertQuery(const CStdString &strQuery)
 {
+  bool bReturn = false;
+
   if (strQuery.IsEmpty())
-    return false;
+    return bReturn;
 
   if (!m_bMultiWrite)
   {
-    if (NULL == m_pDS2.get()) return false;
+    if (NULL == m_pDB.get()) return bReturn;
+    if (NULL == m_pDS2.get()) return bReturn;
 
     m_bMultiWrite = true;
     m_pDS2->insert();
   }
 
   m_pDS2->add_insert_sql(strQuery);
+  bReturn = true;
 
-  return true;
+  return bReturn;
 }
 
 bool CDatabase::CommitInsertQueries()
@@ -240,23 +244,6 @@ bool CDatabase::CommitInsertQueries()
   }
 
   return bReturn;
-}
-
-bool CDatabase::OpenDS()
-{
-  try
-  {
-    if (NULL == m_pDB.get()) return false;
-    if (NULL == m_pDS.get()) return false;
-  }
-  catch (...)
-  {
-    CLog::Log(LOGERROR, "%s - failed to open source and dataset",
-        __FUNCTION__);
-    return false;
-  }
-
-  return true;
 }
 
 bool CDatabase::Open()
