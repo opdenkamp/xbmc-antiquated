@@ -95,7 +95,16 @@ class CKaraokeLyricsCDG : public CKaraokeLyrics
 	int                m_streamIdx;       //!< Packet about to be rendered
 	DWORD              m_colorTable[16];  //!< CD+G color table; color format is A8R8G8B8
 	BYTE			   m_bgColor;         //!< Background color index
+	BYTE               m_borderColor;     //!< Border color index
 	BYTE			   m_cdgScreen[CDG_FULL_WIDTH*CDG_FULL_HEIGHT];	//!< Image state for CD+G stream
+
+	// These values are used to implement screen shifting.  The CDG specification allows the entire 
+	// screen to be shifted, up to 5 pixels right and 11 pixels down.  This shift is persistent
+	// until it is reset to a different value.  In practice, this is used in conjunction with 
+	// scrolling (which always jumps in integer blocks of 6x12 pixels) to perform 
+	// one-pixel-at-a-time scrolls.
+    BYTE				m_hOffset;
+    BYTE				m_vOffset;
 
     //! Rendering stuff
 	CBaseTexture *     m_pCdgTexture;
