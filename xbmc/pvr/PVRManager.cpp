@@ -923,8 +923,6 @@ void CPVRManager::StartChannelScan()
   CLog::Log(LOGNOTICE,"PVR: Starting to scan for channels on client %s:%s", m_clients[scanningClientID]->GetBackendName().c_str(), m_clients[scanningClientID]->GetConnectionString().c_str());
   long perfCnt = CTimeUtils::GetTimeMS();
 
-  PVREpgs.InihibitUpdate(true);
-
   if (m_currentPlayingRecording || m_currentPlayingChannel)
   {
     CLog::Log(LOGNOTICE,"PVR: Is playing data, stopping playback");
@@ -955,8 +953,6 @@ void CPVRManager::ResetDatabase()
   pDlgProgress->StartModal();
   pDlgProgress->Progress();
 
-  PVREpgs.InihibitUpdate(true);
-
   if (m_currentPlayingRecording || m_currentPlayingChannel)
   {
     CLog::Log(LOGNOTICE,"PVR: Is playing data, stopping playback");
@@ -964,6 +960,7 @@ void CPVRManager::ResetDatabase()
   }
   pDlgProgress->SetPercentage(10);
 
+  PVREpgs.Stop();
   Stop();
   pDlgProgress->SetPercentage(20);
 
@@ -989,20 +986,14 @@ void CPVRManager::ResetDatabase()
   m_database.Close();
   CLog::Log(LOGNOTICE,"PVR: TV Database reset finished, starting PVR Subsystem again");
   Start();
+  PVREpgs.Start();
   pDlgProgress->SetPercentage(100);
   pDlgProgress->Close();
 }
 
 void CPVRManager::ResetEPG()
 {
-  CLog::Log(LOGNOTICE,"PVR: EPG is being erased");
-
-  PVREpgs.InihibitUpdate(true);
-  PVREpgs.RemoveAllEntries(true);
-  PVREpgs.InihibitUpdate(false);
-  PVREpgs.UpdateEPG(true);
-
-  CLog::Log(LOGNOTICE,"PVR: EPG reset finished");
+  PVREpgs.Reset(true);
 }
 
 bool CPVRManager::IsPlayingTV()
